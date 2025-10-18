@@ -4,74 +4,75 @@ import java.time.format.DateTimeFormatter;
 
 public class Book
 {
-    private final String bookTitle;
-    private int bookId;
-    private final String authorName;
-    private int authorId;
+    private final String title; //Поля с конструктором я перелопатил
+    private int id = -1;
+    private Author author;
     private final String genre;
-    private int bookRating = 0;
-    private int bookYear;
-    private String bookAddedAt;
-    private int bookPages;
-    private final String bookTranslator;
-    private int userId;
+    private double rating = 0;
+    private int writingYear;
+    private String addedAt;
+    private int pages;
+    private final String translator; //потомок от author -?
 
-    public Book(String bookTitle, String authorName, String genre, String bookTranslator, int bookYear, int bookPages)
+
+    public Book(String title, Author author, String genre, String translator, int year, int pages)
     {
-        this.bookTitle = bookTitle;
-        this.authorName = authorName;
+        this.title = title;
+        this.author = author;
         this.genre = genre;
-        this.bookTranslator = bookTranslator;
-        this.bookAddedAt = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MMMM/yyyy"));
-        this.bookYear = bookYear;
+        this.translator = translator;
+        this.addedAt = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MMMM/yyyy"));
+        this.writingYear = writingYear;
+        this.pages = pages;
 
 
     }
 
     public int getBookId() {
-        return bookId;
+        return id;
     }
 
-    public int getAuthorId() {
-        return authorId;
+    public Author getAuthor() {
+        return author;
     }
 
     public int getBookPages() {
-        return bookPages;
+        return pages;
     }
 
     public String getBookAddedAt() {
-        return bookAddedAt;
+        return addedAt;
     }
 
     public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public String getAuthorName() {
-        return authorName;
+        return title;
     }
 
     public double getBookRating() {
-        return bookRating;
+        return rating;
     }
 
     public int getBookYear() {
-        return bookYear;
+        return writingYear;
     }
 
     public String getBookTranslator() {
-        return bookTranslator;
+        return translator;
     }
 
     public String getGenre() {
         return genre;
     }
 
-    public void setBookRating(int bookRating) {
-        if (0 <=bookRating & 5 >= bookRating)
+    public void setId(int id)
+    {
+     this.id = id;
+    }
+
+    public void setBookRating(double rating) {
+        if (0 <=rating & 5 >= rating)
         {
-            this.bookRating = bookRating;
+            this.rating = rating;
         }
     }
 }
