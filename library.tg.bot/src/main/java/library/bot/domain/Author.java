@@ -1,5 +1,7 @@
 package library.bot.domain;
 
+import library.bot.repository.AuthorRepository;
+
 public class Author {
     private final String authorName;
     private int authorId;
@@ -8,6 +10,7 @@ public class Author {
 
     public Author(String authorName)
     {
+
         this.authorName = authorName;
     }
 
