@@ -12,7 +12,7 @@ public interface BookRepository
 
     List<Book> getAllBooks(); //возвращает все книги из хранилища
 
-    List<Book> findByAuthor(String author); //возвращает все книги указанного автора
+    List<Book> findByAuthorId(int authorId); //возвращает все книги указанного автора
 
     List<Book> findByGenre(String genre); //возвращает все книги указанного жанра
 
@@ -20,5 +20,5 @@ public interface BookRepository
 
     List<Book> findByAddedDate(String date); //Возвращает книги по дате добавления
 
-    int getTotalBooks(); //возвращает количество книг в хранилище
+    int getCountOfTotalBooks(); //возвращает количество книг в хранилище
 }
