@@ -7,7 +7,7 @@ public interface UserRepository
 {
     void save(User user);
 
-    User findById(int userId);
+    User findById(String userId);
 
     User findByName(String username);
 

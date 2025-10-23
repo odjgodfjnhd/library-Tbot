@@ -1,38 +1,42 @@
 package library.bot.domain;
+import java.rmi.server.UID;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class Book
 {
     private final String bookTitle;
-    private int bookId;
+    private final String bookId;
     private final String authorName;
-    private int authorId;
-    private final String genre;
+    private final String authorId;
+    private String userId;
+    private String genre = "Вы ещё не указали жанр для этой книги.";
     private int bookRating = 0;
-    private int bookYear;
-    private String bookAddedAt;
-    private int bookPages;
-    private final String bookTranslator;
-    private int userId;
+    private int bookYear = 0;
+    private LocalDate bookAddedAt;
+    private int bookPages = 0;
+    private String bookTranslator = "Вы ещё не указали, кто переводчик этой книги.";
 
-    public Book(String bookTitle, String authorName, String genre, String bookTranslator, int bookYear, int bookPages)
+
+    public Book(String bookTitle, String authorName, String authorId, String userId)
     {
         this.bookTitle = bookTitle;
         this.authorName = authorName;
-        this.genre = genre;
-        this.bookTranslator = bookTranslator;
-        this.bookAddedAt = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MMMM/yyyy"));
-        this.bookYear = bookYear;
+        this.bookAddedAt = LocalDate.now();
+        this.bookId = UUID.randomUUID().toString();
+        this.authorId = authorId;
+        this.userId = userId;
+
 
 
     }
 
-    public int getBookId() {
+    public String getBookId() {
         return bookId;
     }
 
-    public int getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
@@ -40,7 +44,7 @@ public class Book
         return bookPages;
     }
 
-    public String getBookAddedAt() {
+    public LocalDate getBookAddedAt() {
         return bookAddedAt;
     }
 
@@ -52,7 +56,7 @@ public class Book
         return authorName;
     }
 
-    public double getBookRating() {
+    public int getBookRating() {
         return bookRating;
     }
 
@@ -68,10 +72,24 @@ public class Book
         return genre;
     }
 
-    public void setBookRating(int bookRating) {
-        if (0 <=bookRating & 5 >= bookRating)
+    public String setBookRating(int bookRating) {
+        if (1 <=bookRating & 5 >= bookRating)
         {
             this.bookRating = bookRating;
+            return "Рейтинг книги успешно установлен.";
         }
+        return "Невалидный рейтинг книги.";
+    }
+    public void setGenre(String genre)
+    {
+        this.genre = genre;
+    }
+    public void setBookTranslator(String bookTranslator)
+    {
+        this.bookTranslator = bookTranslator;
+    }
+    public void setBookYear(int bookYear)
+    {
+        this.bookYear = bookYear;
     }
 }

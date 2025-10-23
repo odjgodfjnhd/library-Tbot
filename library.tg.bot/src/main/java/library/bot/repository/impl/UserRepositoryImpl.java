@@ -16,10 +16,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findById(int userId) {
+    public User findById(String userId) {
         for (User user : users)
         {
-            if (user.getUserId() == userId)
+            if (user.getUserId().equals(userId))
             {
                 return user;
             }

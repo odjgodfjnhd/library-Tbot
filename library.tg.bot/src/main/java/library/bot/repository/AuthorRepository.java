@@ -7,9 +7,9 @@ public interface AuthorRepository
 {
     void save(Author author);
 
-    Author findById(int authorId);
+    Author findById(String authorId);
 
-    Author findByName(String name);
+    Author findByName(String authorName);
 
     List<Author> getAllAuthors();
 

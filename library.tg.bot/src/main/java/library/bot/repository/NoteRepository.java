@@ -7,11 +7,11 @@ public interface NoteRepository
 {
     void save(Note note);
 
-    Note findById(int noteId);
+    Note findById(String noteId);
 
-    List<Note> findByBookId(int bookId);
+    List<Note> findByBookId(String bookId);
 
-    List<Note> findByUserId(int userId);
+    List<Note> findByUserId(String userId);
 
     List<Note> getAllNotes();
 

@@ -15,10 +15,10 @@ public class QuoteRepositoryImpl implements QuoteRepository {
     }
 
     @Override
-    public Quote findById(int quoteId) {
+    public Quote findById(String quoteId) {
         for (Quote quote : quotes)
         {
-            if (quote.getNoteId() == quoteId)
+            if (quote.getNoteId().equals(quoteId))
             {
                 return quote;
             }
@@ -27,11 +27,11 @@ public class QuoteRepositoryImpl implements QuoteRepository {
     }
 
     @Override
-    public List<Quote> findByBookId(int bookId) {
+    public List<Quote> findByBookId(String bookId) {
         List<Quote> bookIdQuotes = new ArrayList<>();
         for (Quote quote : quotes)
         {
-            if (quote.getBookId() == bookId)
+            if (quote.getBookId().equals(bookId))
             {
                 bookIdQuotes.add(quote);
             }
@@ -40,11 +40,11 @@ public class QuoteRepositoryImpl implements QuoteRepository {
     }
 
     @Override
-    public List<Quote> findByUserId(int userId) {
+    public List<Quote> findByUserId(String userId) {
         List<Quote> UserIdQuotes = new ArrayList<>();
         for (Quote quote : quotes)
         {
-            if (quote.getUserId() == userId)
+            if (quote.getUserId().equals(userId))
             {
                 UserIdQuotes.add(quote);
             }

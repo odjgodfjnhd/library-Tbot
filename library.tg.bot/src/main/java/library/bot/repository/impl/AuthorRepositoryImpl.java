@@ -17,10 +17,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Author findById(int authorId) {
+    public Author findById(String authorId) {
         for (Author author : authors)
         {
-            if (author.getAuthorId() == authorId)
+            if (author.getAuthorId().equals(authorId))
             {
                 return author;
             }
@@ -29,10 +29,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Author findByName(String name) {
+    public Author findByName(String authorName) {
         for (Author author : authors)
         {
-            if (author.getAuthorName().equals(name))
+            if (author.getAuthorName().equalsIgnoreCase(authorName))
             {
                 return author;
             }

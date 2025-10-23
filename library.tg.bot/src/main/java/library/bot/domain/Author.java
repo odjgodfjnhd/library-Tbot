@@ -3,35 +3,42 @@ package library.bot.domain;
 import library.bot.repository.AuthorRepository;
 import library.bot.repository.impl.AuthorRepositoryImpl;
 
+import java.util.UUID;
+
 public class Author {
     private final String authorName;
-    private int authorId;
+    private final String authorId;
     private int authorRating = 0;
-    private int userId;
+    private final String userId;
 
-    public Author(String authorName, int userId)
+    public Author(String authorName, String userId)
     {
 
         this.authorName = authorName;
+        this.userId = userId;
+        this.authorId = UUID.randomUUID().toString();
+
     }
 
     public String getAuthorName() {
         return authorName;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public int getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorRating(int authorRating) {
-        if (authorRating >=0 & authorRating <= 5)
+    public String setAuthorRating(int authorRating) {
+        if (authorRating >=1 & authorRating <= 5)
         {
             this.authorRating = authorRating;
+            return "Рейтинг автора успешно установлен.";
         }
+        return "Невалидный рейтинг автора.";
     }
 
     public int getAuthorRating() {

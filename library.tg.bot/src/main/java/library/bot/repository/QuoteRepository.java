@@ -7,11 +7,11 @@ public interface QuoteRepository
 {
     void save(Quote quote);
 
-    Quote findById(int quoteId);
+    Quote findById(String quoteId);
 
-    List<Quote> findByBookId(int bookId);
+    List<Quote> findByBookId(String bookId);
 
-    List<Quote> findByUserId(int userId);
+    List<Quote> findByUserId(String userId);
 
     List<Quote> getAllQuotes();
 

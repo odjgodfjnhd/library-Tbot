@@ -1,30 +1,35 @@
 package library.bot.domain;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
 public class Note {
-    protected int noteId;
-    protected int bookId;
-    protected String bookName;
-    protected int userId;
-    protected final String noteCreatedAt;
+    protected final String noteId;
+    protected final String bookId;
+    protected final String bookName;
+    protected final String userId;
+    protected final LocalDate noteCreatedAt;
     protected String noteText;
 
-    public Note(String bookName, String noteText)
+    public Note(String bookName, String bookId, String userId, String noteText)
     {
         this.bookName = bookName;
+        this.bookId = bookId;
+        this.userId = userId;
         this.noteText = noteText;
-        this.noteCreatedAt = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MMMM/yyyy"));
+        this.noteId = UUID.randomUUID().toString();
+        this.noteCreatedAt = LocalDate.now();
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public int getBookId() {
+    public String getBookId() {
         return bookId;
     }
 
-    public int getNoteId() {
+    public String getNoteId() {
         return noteId;
     }
 
@@ -32,7 +37,7 @@ public class Note {
         return bookName;
     }
 
-    public String getNoteCreatedAt() {
+    public LocalDate getNoteCreatedAt() {
         return noteCreatedAt;
     }
 

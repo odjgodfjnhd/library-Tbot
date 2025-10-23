@@ -1,8 +1,15 @@
 package library.bot.domain;
 public class Quote extends Note{
-    private int quotePage;
-    public Quote(String bookName, String noteText, int quotePage) {
-        super(bookName, noteText);
-        this.quotePage = quotePage;
+    private int quotePage = 0;
+    public Quote(String bookName, String bookId, String userId, String quoteText) {
+        super(bookName, bookId, userId, quoteText);
+    }
+    public void setQuotePage(int page)
+    {
+        this.quotePage = page;
+    }
+
+    public int getQuotePage() {
+        return quotePage;
     }
 }

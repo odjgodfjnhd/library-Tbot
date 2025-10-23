@@ -3,6 +3,7 @@ package library.bot.repository.impl;
 import library.bot.domain.Book;
 import library.bot.repository.BookRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +17,10 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Book findById(int bookId) {
+    public Book findById(String bookId) {
         for (Book book : books)
         {
-            if (book.getBookId() == bookId)
+            if (book.getBookId().equals(bookId))
             {
                 return book;
             }
@@ -33,12 +34,12 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> findByAuthorId(int authorId) {
+    public List<Book> findByAuthorId(String authorId) {
         List<Book> authorBooks = new ArrayList<>();
 
         for (Book book : books)
         {
-            if (book.getAuthorId() == authorId)
+            if (book.getAuthorId().equals(authorId))
             {
                 authorBooks.add(book);
             }
@@ -73,7 +74,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> findByAddedDate(String date) {
+    public List<Book> findByAddedDate(LocalDate date) {
         List<Book> dateBooks = new ArrayList<>();
         for (Book book : books)
         {
