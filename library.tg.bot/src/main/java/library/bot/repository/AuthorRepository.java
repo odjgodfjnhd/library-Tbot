@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface AuthorRepository
 {
-    void save(Author author);
+    void save(Author author, String userId);
 
     Author findById(String authorId);
 
@@ -14,4 +14,5 @@ public interface AuthorRepository
     List<Author> getAllAuthors();
 
     int getTotalAuthors();
+    List<Author> getAuthorsByUserId(String userId);
 }

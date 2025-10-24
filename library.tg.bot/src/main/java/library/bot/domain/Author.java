@@ -9,23 +9,15 @@ public class Author {
     private final String authorName;
     private final String authorId;
     private int authorRating = 0;
-    private final String userId;
 
-    public Author(String authorName, String userId)
+    public Author(String authorName)
     {
-
         this.authorName = authorName;
-        this.userId = userId;
         this.authorId = UUID.randomUUID().toString();
-
     }
 
     public String getAuthorName() {
         return authorName;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public String getAuthorId() {
@@ -43,6 +35,5 @@ public class Author {
 
     public int getAuthorRating() {
         return authorRating;
-
     }
 }

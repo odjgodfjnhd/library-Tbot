@@ -5,14 +5,25 @@ import library.bot.repository.BookRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class BookRepositoryImpl implements BookRepository {
     private final List<Book> books = new ArrayList<>();
+    private final HashMap<String, List<String>> userToBooks = new HashMap<>();
 
     @Override
-    public void save(Book book) {
-        books.add(book);
+    public void save(Book book, String userId) {
+        if (!books.contains(book))
+        {
+            books.add(book);
+        }
+        if (!userToBooks.containsKey(userId))
+        {
+            userToBooks.put(userId, new ArrayList<>());
+        }
+        userToBooks.get(userId).add(book.getBookId());
+
 
     }
 
@@ -90,5 +101,19 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public int getCountOfTotalBooks() {
         return books.size();
+    }
+
+    public List<Book> getBooksByUserId(String userId)
+    {
+        List<String> bookIds = userToBooks.get(userId);
+        List<Book> booksByUserId = new ArrayList<>();
+        for (Book book : books)
+        {
+            if (bookIds.contains(book.getBookId()))
+            {
+                booksByUserId.add(book);
+            }
+        }
+        return booksByUserId;
     }
 }

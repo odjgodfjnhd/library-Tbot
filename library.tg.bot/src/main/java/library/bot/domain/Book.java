@@ -10,11 +10,10 @@ public class Book
     private final String bookId;
     private final String authorName;
     private final String authorId;
-    private String userId;
     private String genre = "Вы ещё не указали жанр для этой книги.";
     private int bookRating = 0;
     private int bookYear = 0;
-    private LocalDate bookAddedAt;
+    private final LocalDate bookAddedAt;
     private int bookPages = 0;
     private String bookTranslator = "Вы ещё не указали, кто переводчик этой книги.";
 
@@ -26,10 +25,6 @@ public class Book
         this.bookAddedAt = LocalDate.now();
         this.bookId = UUID.randomUUID().toString();
         this.authorId = authorId;
-        this.userId = userId;
-
-
-
     }
 
     public String getBookId() {

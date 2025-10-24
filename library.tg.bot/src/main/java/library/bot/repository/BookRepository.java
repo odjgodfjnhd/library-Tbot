@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookRepository
 {
-    void save(Book book); //сохраняет книгу в хранилище
+    void save(Book book, String userId); //сохраняет книгу в хранилище
 
     Book findById(String bookId); //ищет книгу по id
 
@@ -23,4 +23,6 @@ public interface BookRepository
     List<Book> findByAddedDate(LocalDate date); //Возвращает книги по дате добавления
 
     int getCountOfTotalBooks(); //возвращает количество книг в хранилище
+
+    List<Book> getBooksByUserId(String userId);
 }
