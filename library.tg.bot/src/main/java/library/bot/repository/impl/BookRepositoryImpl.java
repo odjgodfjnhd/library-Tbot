@@ -20,9 +20,10 @@ public class BookRepositoryImpl implements BookRepository {
         }
         if (!userToBooks.containsKey(userId))
         {
-            userToBooks.put(userId, new ArrayList<>());
+            userToBooks.put(userId, new ArrayList<String>());
         }
         userToBooks.get(userId).add(book.getBookId());
+
 
 
     }
@@ -45,57 +46,17 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> findByAuthorId(String authorId) {
-        List<Book> authorBooks = new ArrayList<>();
+    public List<String> findByAuthorId(String authorId) {
+        List<String> authorBooks = new ArrayList<>();
 
         for (Book book : books)
         {
             if (book.getAuthorId().equals(authorId))
             {
-                authorBooks.add(book);
+                authorBooks.add(book.getBookId());
             }
         }
         return authorBooks;
-    }
-
-    @Override
-    public List<Book> findByGenre(String genre) {
-        List<Book> genreBooks = new ArrayList<>();
-        for (Book book : books)
-        {
-            if (book.getGenre().equals(genre))
-            {
-                genreBooks.add(book);
-            }
-        }
-        return genreBooks;
-    }
-
-    @Override
-    public List<Book> findByYear(int year) {
-        List<Book> yearBooks = new ArrayList<>();
-        for (Book book : books)
-        {
-            if (book.getBookYear() == year)
-            {
-                yearBooks.add(book);
-            }
-        }
-        return yearBooks;
-    }
-
-    @Override
-    public List<Book> findByAddedDate(LocalDate date) {
-        List<Book> dateBooks = new ArrayList<>();
-        for (Book book : books)
-        {
-            if (book.getBookAddedAt().equals(date))
-            {
-                dateBooks.add(book);
-            }
-        }
-        return dateBooks;
-
     }
 
     @Override
@@ -103,17 +64,40 @@ public class BookRepositoryImpl implements BookRepository {
         return books.size();
     }
 
-    public List<Book> getBooksByUserId(String userId)
+    @Override
+    public List<String> getBooksByUserId(String userId)
     {
-        List<String> bookIds = userToBooks.get(userId);
-        List<Book> booksByUserId = new ArrayList<>();
+        return userToBooks.get(userId);
+    }
+
+    @Override public boolean userHaveBook(String userId, String bookName, String authorName)
+    {
+        List<String> bookIds = getBooksByUserId(userId);
+        if (bookIds == null)
+        {
+            return false;
+        }
+        for (String bookId : bookIds)
+        {
+            Book book = findById(bookId);
+            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Book findByNameAndAuthor(String bookName, String authorName)
+    {
         for (Book book : books)
         {
-            if (bookIds.contains(book.getBookId()))
+            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName))
             {
-                booksByUserId.add(book);
+                return book;
             }
         }
-        return booksByUserId;
+        return null;
     }
+
+
 }

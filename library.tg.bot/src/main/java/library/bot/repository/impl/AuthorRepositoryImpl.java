@@ -19,7 +19,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
             authors.add(author);
         }
         if (!userToAuthors.containsKey(userId)) {
-            userToAuthors.put(userId, new ArrayList<>());
+            userToAuthors.put(userId, new ArrayList<String>());
         }
         userToAuthors.get(userId).add(author.getAuthorId());
 
@@ -62,6 +62,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public List<Author> getAuthorsByUserId(String userId)
     {
         List<String> authorIds = userToAuthors.get(userId);
+        if (authorIds == null)
+        {
+            return null;
+        }
         List<Author> authorsByUserId = new ArrayList<>();
         for (Author author : authors)
         {
