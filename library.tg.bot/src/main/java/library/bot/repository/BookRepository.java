@@ -14,15 +14,13 @@ public interface BookRepository
 
     List<Book> getAllBooks(); //возвращает все книги из хранилища
 
-    List<Book> findByAuthorId(String authorId); //возвращает все книги указанного автора
-
-    List<Book> findByGenre(String genre); //возвращает все книги указанного жанра
-
-    List<Book> findByYear(int year); //возвращает все книги (написанные?) в указанном году
-
-    List<Book> findByAddedDate(LocalDate date); //Возвращает книги по дате добавления
+    List<String> findByAuthorId(String authorId); //возвращает все книги указанного автора
 
     int getCountOfTotalBooks(); //возвращает количество книг в хранилище
 
-    List<Book> getBooksByUserId(String userId);
+    List<String> getBooksByUserId(String userId);
+
+    boolean userHaveBook(String userId, String bookName, String authorName);
+
+    Book findByNameAndAuthor(String bookName, String authorName);
 }
