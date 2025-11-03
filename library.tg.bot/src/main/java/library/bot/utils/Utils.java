@@ -58,7 +58,7 @@ public interface Utils {
                   /change_status        -  поменять статус книге
                   /show_authors         -  показать, каких авторов я читаю
                   /show_done_books      -  показать, какие книги я прочитал
-                  /show_undone_books    -  показать, какие книги я ещё не прочитал
+                  /show_undone_books    -  показать, какие книги я ещё неq прочитал
                   /show_books_rated_on  -  Показать книги, которые были оценены на конкретый балл
                   /help                 - Вывести /help
                 """;
