@@ -18,7 +18,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final UserRepository userRepository;
     private final AuthorRepository authorRepository;
 
-    public diaryServiceImpl(BookRepository bookRepository, UserBookMetadataRepository userBookMetadataRepository, UserRepository userRepository, AuthorRepository authorRepository) {
+    public DiaryServiceImpl(BookRepository bookRepository, UserBookMetadataRepository userBookMetadataRepository, UserRepository userRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.userBookMetadataRepository = userBookMetadataRepository;
         this.userRepository = userRepository;
