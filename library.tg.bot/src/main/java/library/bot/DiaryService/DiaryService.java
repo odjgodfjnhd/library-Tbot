@@ -46,6 +46,4 @@ public interface DiaryService {
     void userAddReadingStatus(String userId, String bookId, boolean readingStatus);
 
     String createNewUser(String userName);
-
-
 }

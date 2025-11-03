@@ -5,9 +5,7 @@ import library.bot.domain.Book;
 import java.time.LocalDate;
 import java.util.List;
 
-
-public interface BookRepository
-{
+public interface BookRepository {
     void save(Book book, String userId); //сохраняет книгу в хранилище
 
     Book findById(String bookId); //ищет книгу по id

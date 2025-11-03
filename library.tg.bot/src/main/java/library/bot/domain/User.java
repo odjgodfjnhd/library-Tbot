@@ -1,13 +1,10 @@
 package library.bot.domain;
 
-import java.util.UUID;
-
 public class User {
     private String userName;
     private String userId;
 
-    public User(String userName)
-    {
+    public User(String userName) {
         this.userName = userName;
         this.userId = UUID.randomUUID().toString();
     }

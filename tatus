@@ -1,0 +1,24 @@
+[33m7973c02[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfix/wholeApplication[m[33m, [m[1;31morigin/wholeApplication[m[33m)[m Merge branch 'main' into wholeApplication
+[33ma8a8d46[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Delete .idea directory
+[33m6c41431[m deleted
+[33m4f3b678[m idea deleted
+[33ma95577a[m gitignore
+[33mdf01c34[m .idea in .gitignore
+[33mc2bc6e0[m .idea to git ignore
+[33m823e1e7[m test
+[33mdae98dd[m test
+[33m3d2ddde[m Add .idea to gitignore
+[33mb4e02c7[m DiaryService
+[33m49a2453[m domain and repository classes
+[33m2c97bd3[m[33m ([m[1;31morigin/creatingDomains[m[33m)[m repositories dodelal, built connections between user-books, user-authors
+[33m2260e20[m Remove .idea folder from repository
+[33m0919de1[m Main.java deleted
+[33m4135444[m made id's and improved constructors
+[33m637232f[m created implementations of repo's
+[33m39b4d62[m added repo's
+[33m8ff184c[m created domain's
+[33m097f078[m Added Book class, created setters and getters to it.
+[33mcdfa3ba[m[33m ([m[1;32mmain[m[33m)[m Added whole project on git
+[33m6db6256[m Update README.md
+[33m525fd3b[m Add files via upload
+[33m0b36cb7[m Initial commit

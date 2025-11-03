@@ -9,7 +9,7 @@ public class ServiceComponent {
 
     public ServiceComponent(RepositoryComponent repositoryComponent)
     {
-        this.diaryService = new diaryServiceImpl(repositoryComponent.getBookRepository(),
+        this.diaryService = new DiaryServiceImpl(repositoryComponent.getBookRepository(),
                 repositoryComponent.getUserBookMetadataRepository(), repositoryComponent.getUserRepository(),
                 repositoryComponent.getAuthorRepository());
     }

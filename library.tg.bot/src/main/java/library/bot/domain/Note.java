@@ -1,7 +1,4 @@
 package library.bot.domain;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
 public class Note {
     protected final String noteId;
@@ -11,8 +8,7 @@ public class Note {
     protected final LocalDate noteCreatedAt;
     protected String noteText;
 
-    public Note(String bookName, String bookId, String userId, String noteText)
-    {
+    public Note(String bookName, String bookId, String userId, String noteText) {
         this.bookName = bookName;
         this.bookId = bookId;
         this.userId = userId;

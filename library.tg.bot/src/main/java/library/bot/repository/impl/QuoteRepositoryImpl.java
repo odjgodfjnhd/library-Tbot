@@ -1,64 +1,52 @@
 package library.bot.repository.impl;
 
-import library.bot.domain.Quote;
-import library.bot.domain.User;
-import library.bot.repository.QuoteRepository;
+public class NoteRepositoryImpl implements NoteRepository {
+    private final List<Note> notes = new ArrayList<>();
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class QuoteRepositoryImpl implements QuoteRepository {
-    private final List<Quote> quotes = new ArrayList<>();
     @Override
-    public void save(Quote quote) {
-        quotes.add(quote);
+    public void save(Note note) {
+        notes.add(note);
     }
 
     @Override
-    public Quote findById(String quoteId) {
-        for (Quote quote : quotes)
-        {
-            if (quote.getNoteId().equals(quoteId))
-            {
-                return quote;
+    public Note findById(String noteId) {
+        for (Note note : notes) {
+            if (note.getNoteId().equals(noteId)) {
+                return note;
             }
         }
         return null;
     }
 
     @Override
-    public List<Quote> findByBookId(String bookId) {
-        List<Quote> bookIdQuotes = new ArrayList<>();
-        for (Quote quote : quotes)
-        {
-            if (quote.getBookId().equals(bookId))
-            {
-                bookIdQuotes.add(quote);
+    public List<Note> findByBookId(String bookId) {
+        List<Note> bookIdNotes = new ArrayList<>();
+        for (Note note : notes) {
+            if (note.getBookId().equals(bookId)) {
+                bookIdNotes.add(note);
             }
         }
-        return bookIdQuotes;
+        return bookIdNotes;
     }
 
     @Override
-    public List<Quote> findByUserId(String userId) {
-        List<Quote> UserIdQuotes = new ArrayList<>();
-        for (Quote quote : quotes)
-        {
-            if (quote.getUserId().equals(userId))
-            {
-                UserIdQuotes.add(quote);
+    public List<Note> findByUserId(String userId) {
+        List<Note> userIdNotes = new ArrayList<>();
+        for (Note note : notes) {
+            if (note.getUserId().equals(userId)) {
+                userIdNotes.add(note);
             }
         }
-        return UserIdQuotes;
+        return userIdNotes;
     }
 
     @Override
-    public List<Quote> getAllQuotes() {
-        return quotes;
+    public List<Note> getAllNotes() {
+        return notes;
     }
 
     @Override
-    public int getTotalQuotes() {
-        return quotes.size();
+    public int getTotalNotes() {
+        return notes.size();
     }
 }

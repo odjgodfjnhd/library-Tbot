@@ -1,39 +1,24 @@
 package library.bot.repository.impl;
 
-import library.bot.domain.Book;
-import library.bot.repository.BookRepository;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class BookRepositoryImpl implements BookRepository {
     private final List<Book> books = new ArrayList<>();
     private final HashMap<String, List<String>> userToBooks = new HashMap<>();
 
     @Override
     public void save(Book book, String userId) {
-        if (!books.contains(book))
-        {
+        if (!books.contains(book)) {
             books.add(book);
         }
-        if (!userToBooks.containsKey(userId))
-        {
+        if (!userToBooks.containsKey(userId)) {
             userToBooks.put(userId, new ArrayList<String>());
         }
         userToBooks.get(userId).add(book.getBookId());
-
-
-
     }
 
     @Override
     public Book findById(String bookId) {
-        for (Book book : books)
-        {
-            if (book.getBookId().equals(bookId))
-            {
+        for (Book book : books) {
+            if (book.getBookId().equals(bookId)) {
                 return book;
             }
         }
@@ -48,11 +33,8 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<String> findByAuthorId(String authorId) {
         List<String> authorBooks = new ArrayList<>();
-
-        for (Book book : books)
-        {
-            if (book.getAuthorId().equals(authorId))
-            {
+        for (Book book : books) {
+            if (book.getAuthorId().equals(authorId)) {
                 authorBooks.add(book.getBookId());
             }
         }
@@ -65,39 +47,32 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<String> getBooksByUserId(String userId)
-    {
+    public List<String> getBooksByUserId(String userId) {
         return userToBooks.get(userId);
     }
 
-    @Override public boolean userHaveBook(String userId, String bookName, String authorName)
-    {
+    @Override
+    public boolean userHaveBook(String userId, String bookName, String authorName) {
         List<String> bookIds = getBooksByUserId(userId);
-        if (bookIds == null)
-        {
+        if (bookIds == null) {
             return false;
         }
-        for (String bookId : bookIds)
-        {
+        for (String bookId : bookIds) {
             Book book = findById(bookId);
-            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName))
+            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName)) {
                 return true;
+            }
         }
         return false;
     }
 
     @Override
-    public Book findByNameAndAuthor(String bookName, String authorName)
-    {
-        for (Book book : books)
-        {
-            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName))
-            {
+    public Book findByNameAndAuthor(String bookName, String authorName) {
+        for (Book book : books) {
+            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName)) {
                 return book;
             }
         }
         return null;
     }
-
-
 }

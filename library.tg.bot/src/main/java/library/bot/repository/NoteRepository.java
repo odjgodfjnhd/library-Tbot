@@ -3,8 +3,7 @@ package library.bot.repository;
 import library.bot.domain.Note;
 import java.util.List;
 
-public interface NoteRepository
-{
+public interface NoteRepository {
     void save(Note note);
 
     Note findById(String noteId);
