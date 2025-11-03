@@ -1,5 +1,9 @@
 package library.bot.repository.impl;
 
+import library.bot.domain.Quote;
+import library.bot.domain.User;
+import library.bot.repository.QuoteRepository;
+
 public class NoteRepositoryImpl implements NoteRepository {
     private final List<Note> notes = new ArrayList<>();
 

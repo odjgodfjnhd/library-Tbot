@@ -1,4 +1,7 @@
 package library.bot.domain;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class Note {
     protected final String noteId;

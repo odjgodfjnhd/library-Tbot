@@ -1,5 +1,7 @@
 package library.bot.domain;
 
+import java.util.UUID;
+
 public class User {
     private String userName;
     private String userId;

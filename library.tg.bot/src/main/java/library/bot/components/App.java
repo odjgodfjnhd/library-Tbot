@@ -1,5 +1,6 @@
 package library.bot.components;
 
+import library.bot.DiaryService.DiaryService;
 import library.bot.components.repository.RepositoryComponent;
 import library.bot.components.service.ServiceComponent;
 import library.bot.domain.Author;
@@ -7,9 +8,12 @@ import library.bot.domain.Book;
 import library.bot.domain.User;
 import library.bot.domain.UserBookMetadata;
 import library.bot.repository.AuthorRepository;
+import library.bot.repository.BookRepository;
+import library.bot.repository.UserBookMetadataRepository;
 import library.bot.repository.UserRepository;
 import library.bot.utils.Utils;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 

@@ -1,5 +1,16 @@
 package library.bot.DiaryService.impl;
 
+import library.bot.DiaryService.DiaryService;
+import library.bot.domain.Author;
+import library.bot.domain.Book;
+import library.bot.domain.User;
+import library.bot.domain.UserBookMetadata;
+import library.bot.repository.AuthorRepository;
+import library.bot.repository.BookRepository;
+import library.bot.repository.UserBookMetadataRepository;
+import library.bot.repository.UserRepository;
+import java.util.List;
+
 public class DiaryServiceImpl implements DiaryService {
 
     private final BookRepository bookRepository;

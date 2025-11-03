@@ -1,5 +1,12 @@
 package library.bot.repository.impl;
 
+import library.bot.domain.Author;
+import library.bot.repository.AuthorRepository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class AuthorRepositoryImpl implements AuthorRepository {
 
     private final List<Author> authors = new ArrayList<>();

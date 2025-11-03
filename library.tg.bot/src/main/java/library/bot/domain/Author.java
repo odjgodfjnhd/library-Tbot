@@ -1,5 +1,10 @@
 package library.bot.domain;
 
+import library.bot.repository.AuthorRepository;
+import library.bot.repository.impl.AuthorRepositoryImpl;
+
+import java.util.UUID;
+
 public class Author {
     private final String authorName;
     private final String authorId;
