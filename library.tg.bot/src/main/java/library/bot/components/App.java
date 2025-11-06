@@ -113,11 +113,12 @@ public class App {
         String bookName = scanner.nextLine();
         Utils.askAuthorName(bookName);
         String authorName = scanner.nextLine();
-        String result = doesUserHaveBook(userName, bookName, authorName);
-        if (!result.equals("Вызов корректный")) {
-            System.out.println(result);
+        boolean result = doesUserHaveBook(userName, bookName, authorName);
+        if (!result) {
+            System.out.println("Ошибка: у пользователя нет этой книги");
             return;
         }
+        System.out.println("Вызов корректный");
 
         User user = repositoryComponent.getUserRepository().findByName(userName);
         Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
@@ -135,11 +136,13 @@ public class App {
         String bookName = scanner.nextLine();
         Utils.askAuthorName(bookName);
         String authorName = scanner.nextLine();
-        String result = doesUserHaveBook(userName, bookName, authorName);
-        if (!result.equals("Вызов корректный")) {
-            System.out.println(result);
+        boolean result = doesUserHaveBook(userName, bookName, authorName);
+        if (!result) {
+            System.out.println("Ошибка: у пользователя нет этой книги");
             return;
         }
+        System.out.println("Вызов корректный");
+
         User user = repositoryComponent.getUserRepository().findByName(userName);
         Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
         System.out.println("Какую оценку вы хотите добавить книге (рейтинг от 1 до 5 целое число): ");
