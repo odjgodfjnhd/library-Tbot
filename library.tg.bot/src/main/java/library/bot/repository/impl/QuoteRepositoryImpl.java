@@ -1,7 +1,6 @@
 package library.bot.repository.impl;
 
 import library.bot.domain.Quote;
-import library.bot.domain.User;
 import library.bot.repository.QuoteRepository;
 
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.List;
 
 public class QuoteRepositoryImpl implements QuoteRepository {
     private final List<Quote> quotes = new ArrayList<>();
+
     @Override
     public void save(Quote quote) {
         quotes.add(quote);
@@ -16,10 +16,8 @@ public class QuoteRepositoryImpl implements QuoteRepository {
 
     @Override
     public Quote findById(String quoteId) {
-        for (Quote quote : quotes)
-        {
-            if (quote.getNoteId().equals(quoteId))
-            {
+        for (Quote quote : quotes) {
+            if (quote.getNoteId().equals(quoteId)) {
                 return quote;
             }
         }
@@ -29,10 +27,8 @@ public class QuoteRepositoryImpl implements QuoteRepository {
     @Override
     public List<Quote> findByBookId(String bookId) {
         List<Quote> bookIdQuotes = new ArrayList<>();
-        for (Quote quote : quotes)
-        {
-            if (quote.getBookId().equals(bookId))
-            {
+        for (Quote quote : quotes) {
+            if (quote.getBookId().equals(bookId)) {
                 bookIdQuotes.add(quote);
             }
         }
@@ -41,15 +37,13 @@ public class QuoteRepositoryImpl implements QuoteRepository {
 
     @Override
     public List<Quote> findByUserId(String userId) {
-        List<Quote> UserIdQuotes = new ArrayList<>();
-        for (Quote quote : quotes)
-        {
-            if (quote.getUserId().equals(userId))
-            {
-                UserIdQuotes.add(quote);
+        List<Quote> userIdQuotes = new ArrayList<>();
+        for (Quote quote : quotes) {
+            if (quote.getUserId().equals(userId)) {
+                userIdQuotes.add(quote);
             }
         }
-        return UserIdQuotes;
+        return userIdQuotes;
     }
 
     @Override

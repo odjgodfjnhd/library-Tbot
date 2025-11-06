@@ -1,6 +1,5 @@
 package library.bot.repository.impl;
 
-
 import library.bot.domain.UserBookMetadata;
 import library.bot.repository.UserBookMetadataRepository;
 
@@ -13,10 +12,8 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     HashMap<String, List<UserBookMetadata>> usersToMetadata = new HashMap<>();
 
     @Override
-    public void save(String userId, UserBookMetadata metaData)
-    {
-        if (!usersToMetadata.containsKey(userId))
-        {
+    public void save(String userId, UserBookMetadata metaData) {
+        if (!usersToMetadata.containsKey(userId)) {
             usersToMetadata.put(userId, new ArrayList<>());
         }
         usersToMetadata.get(userId).add(metaData);
@@ -26,10 +23,8 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBooksByGenre(String userId, String genre) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
-        for (UserBookMetadata bookMetadata : userBooksMetadata)
-        {
-            if (bookMetadata.getGenre().equalsIgnoreCase(genre))
-            {
+        for (UserBookMetadata bookMetadata : userBooksMetadata) {
+            if (bookMetadata.getGenre().equalsIgnoreCase(genre)) {
                 bookIds.add(bookMetadata.getBookId());
             }
         }
@@ -40,10 +35,8 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBooksByBookYear(String userId, int bookYear) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
-        for (UserBookMetadata bookMetadata : userBooksMetadata)
-        {
-            if (bookMetadata.getBookYear() == bookYear)
-            {
+        for (UserBookMetadata bookMetadata : userBooksMetadata) {
+            if (bookMetadata.getBookYear() == bookYear) {
                 bookIds.add(bookMetadata.getBookId());
             }
         }
@@ -54,10 +47,8 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBooksByRating(String userId, int bookRating) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
-        for (UserBookMetadata bookMetadata : userBooksMetadata)
-        {
-            if (bookMetadata.getBookRating() == bookRating)
-            {
+        for (UserBookMetadata bookMetadata : userBooksMetadata) {
+            if (bookMetadata.getBookRating() == bookRating) {
                 bookIds.add(bookMetadata.getBookId());
             }
         }
@@ -68,10 +59,8 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBookByReadingStatus(String userId, Boolean readingStatus) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
-        for (UserBookMetadata bookMetadata : userBooksMetadata)
-        {
-            if (bookMetadata.getReadingStatus() == readingStatus)
-            {
+        for (UserBookMetadata bookMetadata : userBooksMetadata) {
+            if (bookMetadata.getReadingStatus() == readingStatus) {
                 bookIds.add(bookMetadata.getBookId());
             }
         }
@@ -79,13 +68,10 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     }
 
     @Override
-    public UserBookMetadata findBookMetaDataByUserIdAndBookId(String userId, String bookId)
-    {
+    public UserBookMetadata findBookMetaDataByUserIdAndBookId(String userId, String bookId) {
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
-        for (UserBookMetadata bookMetadata : userBooksMetadata)
-        {
-            if (bookMetadata.getBookId().equals(bookId))
-            {
+        for (UserBookMetadata bookMetadata : userBooksMetadata) {
+            if (bookMetadata.getBookId().equals(bookId)) {
                 return bookMetadata;
             }
         }
