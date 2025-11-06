@@ -3,8 +3,7 @@ package library.bot.repository;
 import library.bot.domain.Quote;
 import java.util.List;
 
-public interface QuoteRepository
-{
+public interface QuoteRepository {
     void save(Quote quote);
 
     Quote findById(String quoteId);

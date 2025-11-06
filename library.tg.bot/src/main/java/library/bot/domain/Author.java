@@ -10,8 +10,7 @@ public class Author {
     private final String authorId;
     private int authorRating = 0;
 
-    public Author(String authorName)
-    {
+    public Author(String authorName) {
         this.authorName = authorName;
         this.authorId = UUID.randomUUID().toString();
     }
@@ -25,8 +24,7 @@ public class Author {
     }
 
     public String setAuthorRating(int authorRating) {
-        if (authorRating >=1 & authorRating <= 5)
-        {
+        if (authorRating >=1 & authorRating <= 5) {
             this.authorRating = authorRating;
             return "Рейтинг автора успешно установлен.";
         }

@@ -3,8 +3,7 @@ package library.bot.repository;
 import library.bot.domain.User;
 import java.util.List;
 
-public interface UserRepository
-{
+public interface UserRepository {
     void save(User user);
 
     User findById(String userId);
