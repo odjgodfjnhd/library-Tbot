@@ -10,40 +10,43 @@ public interface DiaryService {
      * @param authorName имя автора
      * @return сообщение с результатом операции
      */
-    String userAddBook(String userName, String bookName, String authorName);
+    void userAddBook(String userName, String bookName, String authorName);
 
     /**
      * Метод для добавления цитаты юзера о книге
      * @param userId айди юзера, который хочет дать рейтинг книге
      * @param bookId айди книги, которой юзер хочет поставить рейтинг
-     * @return сообщение с результатом операции
+     * @param bookRating рейтинг, который хочет поставить юзер
      */
-    String userAddBookRating(String userId, String bookId, int bookRating);
+    void userAddBookRating(String userId, String bookId, int bookRating);
 
     /**
-     * Метод для добавления цитаты юзера о книге
+     * Метод для добавления года книги
      * @param userId айди юзера, который хочет добавить год
-     * @param bookId айди книги, которой юзер хочет поставить год
-     * @return сообщение с результатом операции
+     * @param bookId айди книги
+     * @param bookYear год выхода книги
      */
     void userAddBookYear(String userId, String bookId, int bookYear);
 
     /**
-     * Метод для добавления цитаты юзера о книге
+     * Метод для добавления жанра книги
      * @param userId айди юзера, который хочет добавить жанр
-     * @param bookId айди книги, которой юзер хочет поставить жанр
-     * @return сообщение с результатом операции
+     * @param bookId айди книги
+     * @param genre жанр книги
      */
     void userAddBookGenre(String userId, String bookId, String genre);
 
     /**
-     * Метод для добавления цитаты юзера о книге
-     * @param userId айди юзера, который хочет добавить жанр
-     * @param bookId айди книги, которой юзер хочет поставить жанр
-     * @param readingStatus статус, который хочет юзер поставить книге
-     * @return сообщение с результатом операции
+     * Метод для добавления статуса прочтения книги
+     * @param userId айди юзера
+     * @param bookId айди книги
+     * @param readingStatus статус прочтения
      */
     void userAddReadingStatus(String userId, String bookId, boolean readingStatus);
 
-    String createNewUser(String userName);
+    /**
+     * Метод для создания нового пользователя
+     * @param userName имя нового пользователя
+     */
+    void createNewUser(String userName);
 }

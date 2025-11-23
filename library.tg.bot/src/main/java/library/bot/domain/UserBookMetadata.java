@@ -23,26 +23,6 @@ public class UserBookMetadata {
         this.readingStatus = false;
     }
 
-    public String getBookTranslator() {
-        return bookTranslator != null ? bookTranslator : "Вы ещё не указали переводчика этой книги";
-    }
-
-    public int getBookPages() {
-        return bookPages;
-    }
-
-    public String getBookYear() {
-        return bookYear != 0 ? String.valueOf(bookYear) : "Вы ещё не указали год выхода этой книги";
-    }
-
-    public String getGenre() {
-        return genre != null ? genre : "Вы ещё не указали жанр для этой книги.";
-    }
-
-    public String getBookRating() {
-        return bookRating != 0 ? String.valueOf(bookRating) : "Вы ещё не поставили оценку этой книге";
-    }
-
     public String getBookId() {
         return bookId;
     }
@@ -51,28 +31,40 @@ public class UserBookMetadata {
         return userId;
     }
 
+    public String getGenre() {
+        return genre;
+    }
+
+    public int getBookRating() {
+        return bookRating;
+    }
+
+    public int getBookYear() {
+        return bookYear;
+    }
+
     public LocalDate getBookAddedAt() {
         return bookAddedAt;
     }
 
-    public String getReadingStatus() {
-        return readingStatus != null && readingStatus ? "Книга прочитана" : "Книга не прочитана";
+    public int getBookPages() {
+        return bookPages;
     }
 
-    public String setBookRating(int bookRating) {
-        if (1 <= bookRating && bookRating <= 5) {
-            this.bookRating = bookRating;
-            return "Рейтинг книги успешно установлен.";
-        }
-        return "Невалидный рейтинг книги.";
+    public String getBookTranslator() {
+        return bookTranslator;
+    }
+
+    public Boolean getReadingStatus() {
+        return readingStatus;
     }
 
     public void setGenre(String genre) {
         this.genre = genre;
     }
 
-    public void setBookTranslator(String bookTranslator) {
-        this.bookTranslator = bookTranslator;
+    public void setBookRating(int bookRating) {
+        this.bookRating = bookRating;
     }
 
     public void setBookYear(int bookYear) {
@@ -81,6 +73,10 @@ public class UserBookMetadata {
 
     public void setBookPages(int bookPages) {
         this.bookPages = bookPages;
+    }
+
+    public void setBookTranslator(String bookTranslator) {
+        this.bookTranslator = bookTranslator;
     }
 
     public void setReadingStatus(Boolean readingStatus) {

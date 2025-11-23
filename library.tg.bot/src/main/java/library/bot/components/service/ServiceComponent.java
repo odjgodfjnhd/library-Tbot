@@ -2,7 +2,7 @@ package library.bot.components.service;
 
 import library.bot.components.repository.RepositoryComponent;
 import library.bot.DiaryService.DiaryService;
-import library.bot.DiaryService.impl.diaryServiceImpl;
+import library.bot.DiaryService.impl.DiaryServiceImpl;
 
 public class ServiceComponent {
     private final DiaryService diaryService;

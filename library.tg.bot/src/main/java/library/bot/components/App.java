@@ -13,7 +13,6 @@ import library.bot.repository.UserBookMetadataRepository;
 import library.bot.repository.UserRepository;
 import library.bot.utils.Utils;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,14 +40,6 @@ public class App {
                 case "/show_authors" -> showAuthors();
                 case "/show_book_info" -> showBookInfo();
                 case "/rate_book" -> rateBook();
-                /**
-                 case "/set_year" -> setYear();
-                 case "/set_genre" -> setGenre();
-                 case "/change_status" -> changeStatus();
-                 case "/show_done_books" -> showDoneBooks();
-                 case "/show_undone_books" -> showUndoneBooks();
-                 case "/show_books_rated_on" -> showBooksRatedOn();
-                 */
                 case "/help" -> printHelp();
                 default -> System.out.println("Неизвестная команда! Введите /help, чтобы посмотреть список доступных команд.");
             }
@@ -70,16 +61,16 @@ public class App {
         String bookName = scanner.nextLine();
         Utils.askAuthorName(bookName);
         String authorName = scanner.nextLine();
-        String result = serviceComponent.getDiaryService().userAddBook(userName, bookName, authorName);
-        System.out.println(result);
+        serviceComponent.getDiaryService().userAddBook(userName, bookName, authorName);
+        System.out.println("Книга успешно добавлена в ваш читательский дневник!");
     }
 
     private void createUser() {
         System.out.println("\n     *****Регистрация пользователя*****     ");
         System.out.print("Введите, как к вам обращаться, это будет ваш userName: ");
         String userName = scanner.nextLine();
-        String result = serviceComponent.getDiaryService().createNewUser(userName);
-        System.out.println(result);
+        serviceComponent.getDiaryService().createNewUser(userName);
+        System.out.println("Пользователь успешно зарегистрирован");
     }
 
     private void showAuthors() {
@@ -94,7 +85,7 @@ public class App {
         }
         AuthorRepository authorRepository = repositoryComponent.getAuthorRepository();
         List<Author> authors = authorRepository.getAuthorsByUserId(user.getUserId());
-        if (authors == null) {
+        if (authors == null || authors.isEmpty()) {
             System.out.println("Вы пока не читаете ни одного автора. Добавьте книгу и начните сегодня!");
             return;
         }
@@ -118,7 +109,6 @@ public class App {
             System.out.println("Ошибка: у пользователя нет этой книги");
             return;
         }
-        System.out.println("Вызов корректный");
 
         User user = repositoryComponent.getUserRepository().findByName(userName);
         Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
@@ -141,28 +131,24 @@ public class App {
             System.out.println("Ошибка: у пользователя нет этой книги");
             return;
         }
-        System.out.println("Вызов корректный");
 
         User user = repositoryComponent.getUserRepository().findByName(userName);
         Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
         System.out.println("Какую оценку вы хотите добавить книге (рейтинг от 1 до 5 целое число): ");
         int bookRating = scanner.nextInt();
-        result = serviceComponent.getDiaryService().userAddBookRating(user.getUserId(), book.getBookId(), bookRating);
-        System.out.println(result);
+        scanner.nextLine();
+        serviceComponent.getDiaryService().userAddBookRating(user.getUserId(), book.getBookId(), bookRating);
     }
 
     private void printHelp() {
         System.out.println(Utils.Formatter.buildHelpCommands());
     }
 
-    private String doesUserHaveBook(String userName, String bookName, String authorName) {
+    private boolean doesUserHaveBook(String userName, String bookName, String authorName) {
         User user = repositoryComponent.getUserRepository().findByName(userName);
         if (user == null) {
-            return "Такого пользователя не существует!";
+            return false;
         }
-        if (!repositoryComponent.getBookRepository().userHaveBook(user.getUserId(), bookName, authorName)) {
-            return "У вас нет этой книги! Добавьте с помощью команды /add_book.";
-        }
-        return "Вызов корректный";
+        return repositoryComponent.getBookRepository().userHaveBook(user.getUserId(), bookName, authorName);
     }
 }
