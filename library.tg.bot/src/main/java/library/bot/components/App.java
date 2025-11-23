@@ -40,6 +40,14 @@ public class App {
                 case "/show_authors" -> showAuthors();
                 case "/show_book_info" -> showBookInfo();
                 case "/rate_book" -> rateBook();
+                /**
+                 case "/set_year" -> setYear();
+                 case "/set_genre" -> setGenre();
+                 case "/change_status" -> changeStatus();
+                 case "/show_done_books" -> showDoneBooks();
+                 case "/show_undone_books" -> showUndoneBooks();
+                 case "/show_books_rated_on" -> showBooksRatedOn();
+                 */
                 case "/help" -> printHelp();
                 default -> System.out.println("Неизвестная команда! Введите /help, чтобы посмотреть список доступных команд.");
             }

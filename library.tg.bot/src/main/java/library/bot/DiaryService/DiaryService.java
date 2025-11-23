@@ -8,7 +8,6 @@ public interface DiaryService {
      * @param userName айди юзера, которому нужно добавить книгу
      * @param bookName книга которую хочет добавить юзер
      * @param authorName имя автора
-     * @return сообщение с результатом операции
      */
     void userAddBook(String userName, String bookName, String authorName);
 
@@ -16,31 +15,31 @@ public interface DiaryService {
      * Метод для добавления цитаты юзера о книге
      * @param userId айди юзера, который хочет дать рейтинг книге
      * @param bookId айди книги, которой юзер хочет поставить рейтинг
-     * @param bookRating рейтинг, который хочет поставить юзер
+     * @param bookRating рейтинг книги
      */
     void userAddBookRating(String userId, String bookId, int bookRating);
 
     /**
-     * Метод для добавления года книги
+     * Метод для добавления цитаты юзера о книге
      * @param userId айди юзера, который хочет добавить год
-     * @param bookId айди книги
+     * @param bookId айди книги, которой юзер хочет поставить год
      * @param bookYear год выхода книги
      */
     void userAddBookYear(String userId, String bookId, int bookYear);
 
     /**
-     * Метод для добавления жанра книги
+     * Метод для добавления цитаты юзера о книге
      * @param userId айди юзера, который хочет добавить жанр
-     * @param bookId айди книги
+     * @param bookId айди книги, которой юзер хочет поставить жанр
      * @param genre жанр книги
      */
     void userAddBookGenre(String userId, String bookId, String genre);
 
     /**
-     * Метод для добавления статуса прочтения книги
-     * @param userId айди юзера
-     * @param bookId айди книги
-     * @param readingStatus статус прочтения
+     * Метод для добавления цитаты юзера о книге
+     * @param userId айди юзера, который хочет добавить жанр
+     * @param bookId айди книги, которой юзер хочет поставить жанр
+     * @param readingStatus статус, который хочет юзер поставить книге
      */
     void userAddReadingStatus(String userId, String bookId, boolean readingStatus);
 

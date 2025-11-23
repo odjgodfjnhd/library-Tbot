@@ -23,6 +23,26 @@ public class UserBookMetadata {
         this.readingStatus = false;
     }
 
+    public String getBookTranslator() {
+        return bookTranslator;
+    }
+
+    public int getBookPages() {
+        return bookPages;
+    }
+
+    public int getBookYear() {
+        return bookYear;
+    }
+
+    public String getGenre() {
+        return genre; // просто возвращаем значение
+    }
+
+    public int getBookRating() {
+        return bookRating;
+    }
+
     public String getBookId() {
         return bookId;
     }
@@ -31,40 +51,28 @@ public class UserBookMetadata {
         return userId;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public int getBookRating() {
-        return bookRating;
-    }
-
-    public int getBookYear() {
-        return bookYear;
-    }
-
     public LocalDate getBookAddedAt() {
         return bookAddedAt;
-    }
-
-    public int getBookPages() {
-        return bookPages;
-    }
-
-    public String getBookTranslator() {
-        return bookTranslator;
     }
 
     public Boolean getReadingStatus() {
         return readingStatus;
     }
 
+    public String setBookRating(int bookRating) {
+        if (1 <= bookRating && bookRating <= 5) {
+            this.bookRating = bookRating;
+            return "Рейтинг книги успешно установлен.";
+        }
+        return "Невалидный рейтинг книги.";
+    }
+
     public void setGenre(String genre) {
         this.genre = genre;
     }
 
-    public void setBookRating(int bookRating) {
-        this.bookRating = bookRating;
+    public void setBookTranslator(String bookTranslator) {
+        this.bookTranslator = bookTranslator;
     }
 
     public void setBookYear(int bookYear) {
@@ -73,10 +81,6 @@ public class UserBookMetadata {
 
     public void setBookPages(int bookPages) {
         this.bookPages = bookPages;
-    }
-
-    public void setBookTranslator(String bookTranslator) {
-        this.bookTranslator = bookTranslator;
     }
 
     public void setReadingStatus(Boolean readingStatus) {
