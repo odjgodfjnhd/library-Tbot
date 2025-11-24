@@ -23,8 +23,9 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBooksByGenre(String userId, String genre) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
+        if (userBooksMetadata == null) return bookIds;
         for (UserBookMetadata bookMetadata : userBooksMetadata) {
-            if (bookMetadata.getGenre().equalsIgnoreCase(genre)) {
+            if (bookMetadata.getGenre() != null && bookMetadata.getGenre().equalsIgnoreCase(genre)) {
                 bookIds.add(bookMetadata.getBookId());
             }
         }
@@ -35,9 +36,15 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBooksByBookYear(String userId, int bookYear) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
+        if (userBooksMetadata == null) return bookIds;
         for (UserBookMetadata bookMetadata : userBooksMetadata) {
-            if (bookMetadata.getBookYear() == bookYear) {
-                bookIds.add(bookMetadata.getBookId());
+            String yearStr = String.valueOf(bookMetadata.getBookYear());
+            try {
+                int y = Integer.parseInt(yearStr);
+                if (y == bookYear) {
+                    bookIds.add(bookMetadata.getBookId());
+                }
+            } catch (NumberFormatException ignored) {
             }
         }
         return bookIds;
@@ -47,9 +54,15 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBooksByRating(String userId, int bookRating) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
+        if (userBooksMetadata == null) return bookIds;
         for (UserBookMetadata bookMetadata : userBooksMetadata) {
-            if (bookMetadata.getBookRating() == bookRating) {
-                bookIds.add(bookMetadata.getBookId());
+            String ratingStr = String.valueOf(bookMetadata.getBookRating());
+            try {
+                int r = Integer.parseInt(ratingStr);
+                if (r == bookRating) {
+                    bookIds.add(bookMetadata.getBookId());
+                }
+            } catch (NumberFormatException ignored) {
             }
         }
         return bookIds;
@@ -59,8 +72,10 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     public List<String> findBookByReadingStatus(String userId, Boolean readingStatus) {
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
+        if (userBooksMetadata == null) return bookIds;
         for (UserBookMetadata bookMetadata : userBooksMetadata) {
-            if (bookMetadata.getReadingStatus() == readingStatus) {
+            String metaStatus = String.valueOf(bookMetadata.getReadingStatus());
+            if (metaStatus.equalsIgnoreCase(String.valueOf(readingStatus))) {
                 bookIds.add(bookMetadata.getBookId());
             }
         }
@@ -70,6 +85,7 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
     @Override
     public UserBookMetadata findBookMetaDataByUserIdAndBookId(String userId, String bookId) {
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
+        if (userBooksMetadata == null) return null;
         for (UserBookMetadata bookMetadata : userBooksMetadata) {
             if (bookMetadata.getBookId().equals(bookId)) {
                 return bookMetadata;
