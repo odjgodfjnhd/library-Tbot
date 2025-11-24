@@ -24,23 +24,23 @@ public class UserBookMetadata {
     }
 
     public String getBookTranslator() {
-        return bookTranslator != null ? bookTranslator : "Вы ещё не указали переводчика этой книги";
+        return bookTranslator;
     }
 
     public int getBookPages() {
         return bookPages;
     }
 
-    public String getBookYear() {
-        return bookYear != 0 ? String.valueOf(bookYear) : "Вы ещё не указали год выхода этой книги";
+    public int getBookYear() {
+        return bookYear;
     }
 
     public String getGenre() {
-        return genre != null ? genre : "Вы ещё не указали жанр для этой книги.";
+        return genre; // просто возвращаем значение
     }
 
-    public String getBookRating() {
-        return bookRating != 0 ? String.valueOf(bookRating) : "Вы ещё не поставили оценку этой книге";
+    public int getBookRating() {
+        return bookRating;
     }
 
     public String getBookId() {
@@ -55,8 +55,8 @@ public class UserBookMetadata {
         return bookAddedAt;
     }
 
-    public String getReadingStatus() {
-        return readingStatus != null && readingStatus ? "Книга прочитана" : "Книга не прочитана";
+    public Boolean getReadingStatus() {
+        return readingStatus;
     }
 
     public String setBookRating(int bookRating) {

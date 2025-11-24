@@ -22,19 +22,34 @@ public interface Utils {
 
     public static class Formatter {
 
+        public static String strOrDefault(String value, String def) {
+            return value != null && !value.isEmpty() ? value : def;
+        }
+
+        public static String intOrDefault(int value, String def) {
+            return value != 0 ? String.valueOf(value) : def;
+        }
+
+        public static String readingStatus(Boolean status) {
+            return Boolean.TRUE.equals(status) ? "Книга прочитана" : "Книга не прочитана";
+        }
+
         public static String buildBookInfoFull(User user, Book book, UserBookMetadata meta) {
             StringBuilder sb = new StringBuilder();
             sb.append("Название книги: ").append(book.getBookTitle()).append("\n");
             sb.append("Автор книги: ").append(book.getAuthorName()).append("\n");
             sb.append("Дата добавления книги: ")
                     .append(meta.getBookAddedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))).append("\n");
-            sb.append("Жанр книги: ").append(meta.getGenre()).append("\n");
+            sb.append("Жанр книги: ")
+                    .append(strOrDefault(meta.getGenre(), "Вы ещё не указали жанр для этой книги.")).append("\n");
             sb.append("Год выхода книги: ")
-                    .append(meta.getBookYear() != 0 ? meta.getBookYear() : "Вы ещё не указали год выхода этой книги").append("\n");
-            sb.append("Переводчик книги: ").append(meta.getBookTranslator()).append("\n");
+                    .append(intOrDefault(meta.getBookYear(), "Вы ещё не указали год выхода этой книги")).append("\n");
+            sb.append("Переводчик книги: ")
+                    .append(strOrDefault(meta.getBookTranslator(), "Вы ещё не указали переводчика этой книги")).append("\n");
             sb.append("Ваш персональный рейтинг этой книге: ")
-                    .append(meta.getBookRating() != 0 ? meta.getBookRating() : "Вы ещё не поставили оценку этой книге").append("\n");
-            sb.append("Прогресс чтения: ").append(meta.getReadingStatus() ? "Книга прочитана" : "Книга не прочитана");
+                    .append(intOrDefault(meta.getBookRating(), "Вы ещё не поставили оценку этой книге")).append("\n");
+            sb.append("Прогресс чтения: ")
+                    .append(readingStatus(meta.getReadingStatus()));
             return sb.toString();
         }
 
@@ -42,7 +57,35 @@ public interface Utils {
             StringBuilder sb = new StringBuilder();
             sb.append("Название книги: ").append(book.getBookTitle()).append("\n");
             sb.append("Ваш персональный рейтинг этой книге: ")
-                    .append(meta.getBookRating() != 0 ? meta.getBookRating() : "Вы ещё не поставили оценку этой книге");
+                    .append(intOrDefault(meta.getBookRating(), "Вы ещё не поставили оценку этой книге"));
+            return sb.toString();
+        }
+
+        public static String buildBookGenreInfo(Book book, UserBookMetadata meta) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Название книги: ").append(book.getBookTitle()).append("\n");
+            sb.append("Жанр книги: ").append(strOrDefault(meta.getGenre(), "Вы ещё не указали жанр для этой книги."));
+            return sb.toString();
+        }
+
+        public static String buildBookYearInfo(Book book, UserBookMetadata meta) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Название книги: ").append(book.getBookTitle()).append("\n");
+            sb.append("Год выхода книги: ").append(intOrDefault(meta.getBookYear(), "Вы ещё не указали год выхода этой книги"));
+            return sb.toString();
+        }
+
+        public static String buildBookTranslatorInfo(Book book, UserBookMetadata meta) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Название книги: ").append(book.getBookTitle()).append("\n");
+            sb.append("Переводчик книги: ").append(strOrDefault(meta.getBookTranslator(), "Вы ещё не указали переводчика этой книги"));
+            return sb.toString();
+        }
+
+        public static String buildBookReadingStatusInfo(Book book, UserBookMetadata meta) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Название книги: ").append(book.getBookTitle()).append("\n");
+            sb.append("Прогресс чтения: ").append(readingStatus(meta.getReadingStatus()));
             return sb.toString();
         }
 
@@ -50,7 +93,7 @@ public interface Utils {
             return """
                 Доступные команды:
                   /add_book             -  добавить книгу
-                  /create_user          -  добавить читетеля
+                  /create_user          -  добавить читателя
                   /show_book_info       -  показать информацию о моей книге
                   /rate_book            -  поставить рейтинг книге
                   /set_year             -  указать год выпуска книге
@@ -58,9 +101,9 @@ public interface Utils {
                   /change_status        -  поменять статус книге
                   /show_authors         -  показать, каких авторов я читаю
                   /show_done_books      -  показать, какие книги я прочитал
-                  /show_undone_books    -  показать, какие книги я ещё неq прочитал
-                  /show_books_rated_on  -  Показать книги, которые были оценены на конкретый балл
-                  /help                 - Вывести /help
+                  /show_undone_books    -  показать, какие книги я ещё не прочитал
+                  /show_books_rated_on  -  показать книги, которые были оценены на конкретный балл
+                  /help                 -  вывести /help
                 """;
         }
     }
