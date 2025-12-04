@@ -1,4 +1,3 @@
-// src/main/java/library/bot/components/SessionManager.java
 package library.bot.handlers;
 
 import java.util.HashMap;
