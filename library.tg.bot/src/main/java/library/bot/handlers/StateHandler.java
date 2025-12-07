@@ -109,7 +109,7 @@ public class StateHandler {
             }
             //Тут завершается набор состояний для добавления жанра книге//
 
-            //Блок состояний для добавления года издания книги
+            //Блок состояний для добавления года издания книги//
             case "WAITING_BOOK_NAME_FOR_ADD_YEAR": {
                 sessionManager.getSession(chatId).putData("bookName", input);
                 sessionManager.getSession(chatId).setState("WAITING_AUTHOR_NAME_FOR_ADD_YEAR");
@@ -128,7 +128,6 @@ public class StateHandler {
 
                 try {
                     int year = Integer.parseInt(input.trim());
-                    // Опционально: проверка разумного диапазона
                     if (year < 1000 || year > 2100) {
                         return "❌ Укажите корректный год (от 1000 до 2100).\n" +
                                 "Попробуйте снова через /add_book_year.";
@@ -141,9 +140,9 @@ public class StateHandler {
                             "Попробуйте снова через /add_book_year.";
                 }
             }
-            //Тут завершается набор состояний для добавления года издания книги
+            //Тут завершается набор состояний для добавления года издания книги//
 
-            //Блок состояний для установки статуса книги
+            //Блок состояний для установки статуса книги//
             case "WAITING_BOOK_NAME_FOR_READ_STATUS": {
                 sessionManager.getSession(chatId).putData("bookName", input);
                 sessionManager.getSession(chatId).setState("WAITING_AUTHOR_NAME_FOR_READ_STATUS");
@@ -180,7 +179,21 @@ public class StateHandler {
                 String userName = sessionManager.getUserNameByChatId(chatId);
                 return messageService.setReadingStatus(userName, bookName, authorName, isRead);
             }
-            //Тут завершается набор состояний для установки статуса книги
+            //Тут завершается набор состояний для установки статуса книги//
+
+            //Блок состояний для вывода книг, оценённых на конкретный рейтинг//
+            case "WAITING_RATING_TO_SHOW": {
+                try {
+                    int rating = Integer.parseInt(input.trim());
+                    sessionManager.clearSession(chatId);
+                    String userName = sessionManager.getUserNameByChatId(chatId);
+                    return messageService.showBooksRatedOn(userName, rating);
+                } catch (NumberFormatException e) {
+                    return "❌ Введите целое число от 1 до 5.\n" +
+                            "Попробуйте снова через /show_books_rated_on.";
+                }
+            }
+            //Тут завершается набор состояний для вывода книг, оценённых на конкретный рейтинг//
 
             default: {
                 sessionManager.clearSession(chatId);

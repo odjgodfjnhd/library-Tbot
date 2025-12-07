@@ -55,14 +55,10 @@ public class UserBookMetadataRepositoryImpl implements UserBookMetadataRepositor
         List<String> bookIds = new ArrayList<>();
         List<UserBookMetadata> userBooksMetadata = usersToMetadata.get(userId);
         if (userBooksMetadata == null) return bookIds;
-        for (UserBookMetadata bookMetadata : userBooksMetadata) {
-            String ratingStr = String.valueOf(bookMetadata.getBookRating());
-            try {
-                int r = Integer.parseInt(ratingStr);
-                if (r == bookRating) {
-                    bookIds.add(bookMetadata.getBookId());
-                }
-            } catch (NumberFormatException ignored) {
+
+        for (UserBookMetadata meta : userBooksMetadata) {
+            if (meta.getBookRating() == bookRating) {
+                bookIds.add(meta.getBookId());
             }
         }
         return bookIds;

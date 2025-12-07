@@ -59,6 +59,16 @@ public class CommandHandler {
                 sessionManager.getSession(chatId).setState("WAITING_BOOK_NAME_FOR_READ_STATUS");
                 return "📖 Введите название книги:";
 
+            case "/show_done_books":
+                return messageService.showDoneBooks(userName);
+
+            case "/show_undone_books":
+                return messageService.showUndoneBooks(userName);
+
+            case "/show_books_rated_on":
+                sessionManager.getSession(chatId).setState("WAITING_RATING_TO_SHOW");
+                return "⭐ Введите оценку (от 1 до 5), чтобы увидеть книги с этой оценкой:";
+
             default:
                 return "Неизвестная команда. Используйте /help";
         }

@@ -8,6 +8,7 @@ import library.bot.domain.User;
 import library.bot.domain.UserBookMetadata;
 import library.bot.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserMessageService {
@@ -170,6 +171,113 @@ public class UserMessageService {
         serviceComponent.getDiaryService().userAddReadingStatus(user.getUserId(), book.getBookId(), isRead);
         String statusText = isRead ? "✅ Прочитана" : "⏳ Не прочитана";
         return "📖 Статус книги «" + bookName + "» обновлён: " + statusText;
+    }
+    public String showDoneBooks(String userName) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        List<String> doneBookIds = repositoryComponent.getUserBookMetadataRepository()
+                .findBookByReadingStatus(user.getUserId(), true);
+
+        if (doneBookIds.isEmpty()) {
+            return "📭 Вы пока не прочитали ни одной книги.\n" +
+                    "Добавьте книги через /add_book и отметьте их как прочитанные через /set_read_status.";
+        }
+
+        List<Book> doneBooks = new ArrayList<>();
+        for (String bookId : doneBookIds) {
+            Book book = repositoryComponent.getBookRepository().findById(bookId);
+            if (book != null) {
+                doneBooks.add(book);
+            }
+        }
+
+        if (doneBooks.isEmpty()) {
+            return "📭 У вас нет данных о прочитанных книгах.";
+        }
+
+        StringBuilder sb = new StringBuilder("✅ Прочитанные книги (" + doneBooks.size() + "):\n");
+        for (Book book : doneBooks) {
+            sb.append("• ").append(book.getBookTitle())
+                    .append(" — ").append(book.getAuthorName()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public String showUndoneBooks(String userName) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        List<String> undoneBookIds = repositoryComponent.getUserBookMetadataRepository()
+                .findBookByReadingStatus(user.getUserId(), false);
+
+        if (undoneBookIds.isEmpty()) {
+            return "📭 У вас нет непрочитанных книг.\n" +
+                    "Все книги отмечены как прочитанные!";
+        }
+
+        List<Book> undoneBooks = new ArrayList<>();
+        for (String bookId : undoneBookIds) {
+            Book book = repositoryComponent.getBookRepository().findById(bookId);
+            if (book != null) {
+                undoneBooks.add(book);
+            }
+        }
+
+        if (undoneBooks.isEmpty()) {
+            return "📭 У вас нет данных о непрочитанных книгах.";
+        }
+
+        StringBuilder sb = new StringBuilder("⏳ Непрочитанные книги (" + undoneBooks.size() + "):\n");
+        for (Book book : undoneBooks) {
+            sb.append("• ").append(book.getBookTitle())
+                    .append(" — ").append(book.getAuthorName()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public String showBooksRatedOn(String userName, int rating) {
+
+        if (rating < 1 || rating > 5) {
+            return "❌ Оценка должна быть от 1 до 5.\n" +
+                    "Попробуйте снова через /show_books_rated_on.";
+        }
+
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        List<String> bookIds = repositoryComponent.getUserBookMetadataRepository()
+                .findBooksByRating(user.getUserId(), rating);
+
+        if (bookIds.isEmpty()) {
+            return "📭 У вас нет книг с оценкой " + rating + ".\n" +
+                    "Оцените книги через /rate_book!";
+        }
+
+        List<Book> books = new ArrayList<>();
+        for (String bookId : bookIds) {
+            Book book = repositoryComponent.getBookRepository().findById(bookId);
+            if (book != null) {
+                books.add(book);
+            }
+        }
+
+        if (books.isEmpty()) {
+            return "📭 Нет данных о книгах с оценкой " + rating + ".";
+        }
+
+        StringBuilder sb = new StringBuilder("⭐ Книги с оценкой " + rating + " (" + books.size() + "):\n");
+        for (Book book : books) {
+            sb.append("• ").append(book.getBookTitle())
+                    .append(" — ").append(book.getAuthorName()).append("\n");
+        }
+        return sb.toString();
     }
 
     public String getHelpText() {
