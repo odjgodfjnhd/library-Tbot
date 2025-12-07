@@ -3,7 +3,9 @@ package library.bot.components.service;
 import library.bot.components.repository.RepositoryComponent;
 import library.bot.components.service.ServiceComponent;
 import library.bot.domain.Author;
+import library.bot.domain.Book;
 import library.bot.domain.User;
+import library.bot.domain.UserBookMetadata;
 import library.bot.utils.Utils;
 
 import java.util.List;
@@ -74,6 +76,100 @@ public class UserMessageService {
             sb.append("• ").append(author.getAuthorName()).append("\n");
         }
         return sb.toString();
+    }
+    public String rateBook(String userName, String bookName, String authorName, int rating) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
+        if (book == null) {
+            return "❌ Книга «" + bookName + "» автора «" + authorName + "» не найдена.";
+        }
+
+        if (!repositoryComponent.getBookRepository().userHaveBook(user.getUserId(), bookName, authorName)) {
+            return "❌ У вас нет этой книги. Сначала добавьте её через /add_book.";
+        }
+
+        serviceComponent.getDiaryService().userAddBookRating(user.getUserId(), book.getBookId(), rating);
+        return "⭐ Книге «" + bookName + "» выставлена оценка: " + rating;
+    }
+
+    public String showBookInfo(String userName, String bookName, String authorName) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        if (!repositoryComponent.getBookRepository().userHaveBook(user.getUserId(), bookName, authorName)) {
+            return "❌ У вас нет книги «" + bookName + "» автора «" + authorName + "».\n" +
+                    "Добавьте её через /add_book.";
+        }
+
+        Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
+        UserBookMetadata meta = repositoryComponent.getUserBookMetadataRepository()
+                .findBookMetaDataByUserIdAndBookId(user.getUserId(), book.getBookId());
+
+        return Utils.Formatter.buildBookInfoFull(user, book, meta);
+    }
+
+    public String addBookGenre(String userName, String bookName, String authorName, String genre) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
+        if (book == null) {
+            return "❌ Книга «" + bookName + "» автора «" + authorName + "» не найдена.";
+        }
+
+        if (!repositoryComponent.getBookRepository().userHaveBook(user.getUserId(), bookName, authorName)) {
+            return "❌ У вас нет этой книги. Сначала добавьте её через /add_book.";
+        }
+
+        serviceComponent.getDiaryService().userAddBookGenre(user.getUserId(), book.getBookId(), genre);
+        return "🎭 Жанр книги «" + bookName + "» установлен: " + genre;
+    }
+
+    public String addBookYear(String userName, String bookName, String authorName, int year) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
+        if (book == null) {
+            return "❌ Книга «" + bookName + "» автора «" + authorName + "» не найдена.";
+        }
+
+        if (!repositoryComponent.getBookRepository().userHaveBook(user.getUserId(), bookName, authorName)) {
+            return "❌ У вас нет этой книги. Сначала добавьте её через /add_book.";
+        }
+
+        serviceComponent.getDiaryService().userAddBookYear(user.getUserId(), book.getBookId(), year);
+        return "📅 Год издания книги «" + bookName + "» установлен: " + year;
+    }
+
+    public String setReadingStatus(String userName, String bookName, String authorName, boolean isRead) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        Book book = repositoryComponent.getBookRepository().findByNameAndAuthor(bookName, authorName);
+        if (book == null) {
+            return "❌ Книга «" + bookName + "» автора «" + authorName + "» не найдена.";
+        }
+
+        if (!repositoryComponent.getBookRepository().userHaveBook(user.getUserId(), bookName, authorName)) {
+            return "❌ У вас нет этой книги. Сначала добавьте её через /add_book.";
+        }
+
+        serviceComponent.getDiaryService().userAddReadingStatus(user.getUserId(), book.getBookId(), isRead);
+        String statusText = isRead ? "✅ Прочитана" : "⏳ Не прочитана";
+        return "📖 Статус книги «" + bookName + "» обновлён: " + statusText;
     }
 
     public String getHelpText() {

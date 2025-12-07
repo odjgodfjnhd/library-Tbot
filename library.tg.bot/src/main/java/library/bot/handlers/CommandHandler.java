@@ -39,6 +39,26 @@ public class CommandHandler {
             case "/show_authors":
                 return messageService.showAuthors(userName);
 
+            case "/rate_book":
+                sessionManager.getSession(chatId).setState("WAITING_BOOK_NAME_FOR_RATE");
+                return "⭐ Введите название книги:";
+
+            case "/show_book_info":
+                sessionManager.getSession(chatId).setState("WAITING_BOOK_NAME_FOR_SHOW_INFO");
+                return "📘 Введите название книги:";
+
+            case "/add_book_genre":
+                sessionManager.getSession(chatId).setState("WAITING_BOOK_NAME_FOR_ADD_GENRE");
+                return "🎭 Введите название книги:";
+
+            case "/add_book_year":
+                sessionManager.getSession(chatId).setState("WAITING_BOOK_NAME_FOR_ADD_YEAR");
+                return "📅 Введите название книги:";
+
+            case "/set_status":
+                sessionManager.getSession(chatId).setState("WAITING_BOOK_NAME_FOR_READ_STATUS");
+                return "📖 Введите название книги:";
+
             default:
                 return "Неизвестная команда. Используйте /help";
         }
