@@ -3,11 +3,12 @@ package library.bot.repository.impl;
 import library.bot.domain.Quote;
 import library.bot.repository.QuoteRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class QuoteRepositoryImpl implements QuoteRepository {
-    private final List<Quote> quotes = new ArrayList<>();
+
+    private final List<Quote> quotes = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(Quote quote) {
@@ -26,7 +27,7 @@ public class QuoteRepositoryImpl implements QuoteRepository {
 
     @Override
     public List<Quote> findByBookId(String bookId) {
-        List<Quote> bookIdQuotes = new ArrayList<>();
+        List<Quote> bookIdQuotes = new CopyOnWriteArrayList<>();
         for (Quote quote : quotes) {
             if (quote.getBookId().equals(bookId)) {
                 bookIdQuotes.add(quote);
@@ -37,7 +38,7 @@ public class QuoteRepositoryImpl implements QuoteRepository {
 
     @Override
     public List<Quote> findByUserId(String userId) {
-        List<Quote> userIdQuotes = new ArrayList<>();
+        List<Quote> userIdQuotes = new CopyOnWriteArrayList<>();
         for (Quote quote : quotes) {
             if (quote.getUserId().equals(userId)) {
                 userIdQuotes.add(quote);

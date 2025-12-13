@@ -1,14 +1,14 @@
 package library.bot.repository.impl;
 
-import library.bot.domain.Author;
 import library.bot.domain.User;
 import library.bot.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class UserRepositoryImpl implements UserRepository {
-    private final List<User> users = new ArrayList<>();
+
+    private final List<User> users = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(User user) {

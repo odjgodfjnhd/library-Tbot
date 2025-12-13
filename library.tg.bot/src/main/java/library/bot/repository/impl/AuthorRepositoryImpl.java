@@ -3,24 +3,24 @@ package library.bot.repository.impl;
 import library.bot.domain.Author;
 import library.bot.repository.AuthorRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AuthorRepositoryImpl implements AuthorRepository {
 
-    private final List<Author> authors = new ArrayList<>();
-    private final HashMap<String, List<String>> userToAuthors = new HashMap<>();
+    private final List<Author> authors = new CopyOnWriteArrayList<>();
+    private final ConcurrentHashMap<String, CopyOnWriteArrayList<String>> userToAuthors =
+            new ConcurrentHashMap<>();
 
     @Override
     public void save(Author author, String userId) {
         if (!authors.contains(author)) {
             authors.add(author);
         }
-        if (!userToAuthors.containsKey(userId)) {
-            userToAuthors.put(userId, new ArrayList<String>());
-        }
-        userToAuthors.get(userId).add(author.getAuthorId());
+
+        userToAuthors.computeIfAbsent(userId, k -> new CopyOnWriteArrayList<>())
+                .add(author.getAuthorId());
     }
 
     @Override
@@ -55,16 +55,17 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public List<Author> getAuthorsByUserId(String userId) {
-        List<String> authorIds = userToAuthors.get(userId);
-        if (authorIds == null) {
-            return null;
+        CopyOnWriteArrayList<String> authorIds = userToAuthors.get(userId);
+        if (authorIds == null || authorIds.isEmpty()) {
+            return List.of();
         }
-        List<Author> authorsByUserId = new ArrayList<>();
+
+        List<Author> result = new CopyOnWriteArrayList<>();
         for (Author author : authors) {
             if (authorIds.contains(author.getAuthorId())) {
-                authorsByUserId.add(author);
+                result.add(author);
             }
         }
-        return authorsByUserId;
+        return result;
     }
 }
