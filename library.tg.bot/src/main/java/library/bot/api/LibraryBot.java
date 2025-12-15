@@ -18,15 +18,7 @@ public class LibraryBot extends TelegramLongPollingBot {
         this.tgApiHandler = new TgApiHandler();
 
         int threadCount = Runtime.getRuntime().availableProcessors() * 2;
-        this.executorService = Executors.newFixedThreadPool(threadCount, new ThreadFactory() {
-            private int counter = 1;
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread thread = new Thread(r, "BotWorker-" + counter++);
-                thread.setDaemon(true);
-                return thread;
-            }
-        });
+        this.executorService = Executors.newFixedThreadPool(threadCount);
 
         System.out.println("создан тредпул на " + threadCount + " потоков");
     }
@@ -62,7 +54,7 @@ public class LibraryBot extends TelegramLongPollingBot {
         });
     }
 
-    private synchronized void sendMessage(Long chatId, String text) {
+    private void sendMessage(Long chatId, String text) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);

@@ -3,15 +3,16 @@ package library.bot.repository.impl;
 import library.bot.domain.Author;
 import library.bot.repository.AuthorRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AuthorRepositoryImpl implements AuthorRepository {
 
     private final List<Author> authors = new CopyOnWriteArrayList<>();
-    private final ConcurrentHashMap<String, CopyOnWriteArrayList<String>> userToAuthors =
-            new ConcurrentHashMap<>();
+    private final HashMap<String, ArrayList<String>> userToAuthors =
+            new HashMap<>();
 
     @Override
     public void save(Author author, String userId) {
@@ -19,7 +20,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
             authors.add(author);
         }
 
-        userToAuthors.computeIfAbsent(userId, k -> new CopyOnWriteArrayList<>())
+        userToAuthors.computeIfAbsent(userId, k -> new ArrayList<>())
                 .add(author.getAuthorId());
     }
 
@@ -55,7 +56,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public List<Author> getAuthorsByUserId(String userId) {
-        CopyOnWriteArrayList<String> authorIds = userToAuthors.get(userId);
+        ArrayList<String> authorIds = userToAuthors.get(userId);
         if (authorIds == null || authorIds.isEmpty()) {
             return List.of();
         }

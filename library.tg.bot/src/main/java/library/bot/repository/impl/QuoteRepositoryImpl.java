@@ -3,6 +3,7 @@ package library.bot.repository.impl;
 import library.bot.domain.Quote;
 import library.bot.repository.QuoteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -27,7 +28,7 @@ public class QuoteRepositoryImpl implements QuoteRepository {
 
     @Override
     public List<Quote> findByBookId(String bookId) {
-        List<Quote> bookIdQuotes = new CopyOnWriteArrayList<>();
+        List<Quote> bookIdQuotes = new ArrayList<>();
         for (Quote quote : quotes) {
             if (quote.getBookId().equals(bookId)) {
                 bookIdQuotes.add(quote);
@@ -38,7 +39,7 @@ public class QuoteRepositoryImpl implements QuoteRepository {
 
     @Override
     public List<Quote> findByUserId(String userId) {
-        List<Quote> userIdQuotes = new CopyOnWriteArrayList<>();
+        List<Quote> userIdQuotes = new ArrayList<>();
         for (Quote quote : quotes) {
             if (quote.getUserId().equals(userId)) {
                 userIdQuotes.add(quote);

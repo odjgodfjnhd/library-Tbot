@@ -3,6 +3,7 @@ package library.bot.repository.impl;
 import library.bot.domain.Note;
 import library.bot.repository.NoteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -27,7 +28,7 @@ public class NoteRepositoryImpl implements NoteRepository {
 
     @Override
     public List<Note> findByBookId(String bookId) {
-        List<Note> bookIdNotes = new CopyOnWriteArrayList<>();
+        List<Note> bookIdNotes = new ArrayList<>();
         for (Note note : notes) {
             if (note.getBookId().equals(bookId)) {
                 bookIdNotes.add(note);
@@ -38,7 +39,7 @@ public class NoteRepositoryImpl implements NoteRepository {
 
     @Override
     public List<Note> findByUserId(String userId) {
-        List<Note> userIdNotes = new CopyOnWriteArrayList<>();
+        List<Note> userIdNotes = new ArrayList<>();
         for (Note note : notes) {
             if (note.getUserId().equals(userId)) {
                 userIdNotes.add(note);
