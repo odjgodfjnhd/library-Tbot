@@ -5,9 +5,11 @@ import library.bot.repository.QuoteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class QuoteRepositoryImpl implements QuoteRepository {
-    private final List<Quote> quotes = new ArrayList<>();
+
+    private final List<Quote> quotes = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(Quote quote) {

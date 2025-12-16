@@ -1,15 +1,15 @@
 package library.bot.repository.impl;
 
-import library.bot.domain.Book;
 import library.bot.domain.Note;
-import library.bot.domain.Quote;
 import library.bot.repository.NoteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NoteRepositoryImpl implements NoteRepository {
-    private final List<Note> notes = new ArrayList<>();
+
+    private final List<Note> notes = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(Note note) {
