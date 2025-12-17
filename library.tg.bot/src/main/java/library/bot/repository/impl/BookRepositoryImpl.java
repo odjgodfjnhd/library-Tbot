@@ -3,24 +3,25 @@ package library.bot.repository.impl;
 import library.bot.domain.Book;
 import library.bot.repository.BookRepository;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BookRepositoryImpl implements BookRepository {
-    private final List<Book> books = new ArrayList<>();
-    private final HashMap<String, List<String>> userToBooks = new HashMap<>();
+
+    private final List<Book> books = new CopyOnWriteArrayList<>();
+    private final HashMap<String, ArrayList<String>> userToBooks =
+            new HashMap<>();
 
     @Override
     public void save(Book book, String userId) {
         if (!books.contains(book)) {
             books.add(book);
         }
-        if (!userToBooks.containsKey(userId)) {
-            userToBooks.put(userId, new ArrayList<String>());
-        }
-        userToBooks.get(userId).add(book.getBookId());
+
+        userToBooks.computeIfAbsent(userId, k -> new ArrayList<>())
+                .add(book.getBookId());
     }
 
     @Override
@@ -56,18 +57,21 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<String> getBooksByUserId(String userId) {
-        return userToBooks.get(userId);
+        List<String> bookIds = userToBooks.get(userId);
+        return bookIds != null ? bookIds : List.of();
     }
 
     @Override
     public boolean userHaveBook(String userId, String bookName, String authorName) {
         List<String> bookIds = getBooksByUserId(userId);
-        if (bookIds == null) {
+        if (bookIds.isEmpty()) {
             return false;
         }
         for (String bookId : bookIds) {
             Book book = findById(bookId);
-            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName)) {
+            if (book != null &&
+                    book.getBookTitle().equals(bookName) &&
+                    book.getAuthorName().equalsIgnoreCase(authorName)) {
                 return true;
             }
         }
@@ -77,7 +81,8 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book findByNameAndAuthor(String bookName, String authorName) {
         for (Book book : books) {
-            if (book.getBookTitle().equals(bookName) & book.getAuthorName().equalsIgnoreCase(authorName)) {
+            if (book.getBookTitle().trim().equalsIgnoreCase(bookName) &&
+                    book.getAuthorName().trim().equalsIgnoreCase(authorName)) {
                 return book;
             }
         }
