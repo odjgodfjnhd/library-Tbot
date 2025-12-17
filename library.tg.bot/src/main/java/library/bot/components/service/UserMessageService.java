@@ -2,12 +2,10 @@ package library.bot.components.service;
 
 import library.bot.components.repository.RepositoryComponent;
 import library.bot.components.service.ServiceComponent;
-import library.bot.domain.Author;
-import library.bot.domain.Book;
-import library.bot.domain.User;
-import library.bot.domain.UserBookMetadata;
+import library.bot.domain.*;
 import library.bot.utils.Utils;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -277,6 +275,45 @@ public class UserMessageService {
             sb.append("• ").append(book.getBookTitle())
                     .append(" — ").append(book.getAuthorName()).append("\n");
         }
+        return sb.toString();
+    }
+
+    public String addNoteToBook(String userName, String bookName, String authorName, String noteText) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        try {
+            serviceComponent.getDiaryService().addNoteToBook(user.getUserId(), bookName, authorName, noteText);
+            return "📝 Запись к книге «" + bookName + "» сохранена!";
+        } catch (IllegalArgumentException e) {
+            return "❌ " + e.getMessage();
+        }
+    }
+
+    public String showNotesForBook(String userName, String bookName, String authorName) {
+        User user = repositoryComponent.getUserRepository().findByName(userName);
+        if (user == null) {
+            return "❌ Пользователь не найден.";
+        }
+
+        List<Note> notes = serviceComponent.getDiaryService()
+                .getUserNotesForBook(user.getUserId(), bookName, authorName);
+
+        if (notes.isEmpty()) {
+            return "📭 У вас нет записей к книге «" + bookName + "».\n" +
+                    "Добавьте запись через /add_note.";
+        }
+
+        StringBuilder sb = new StringBuilder("📖 Записи к книге «" + bookName + "» (" + notes.size() + "):\n\n");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+
+        for (Note note : notes) {
+            sb.append("📅 ").append(note.getNoteCreatedAt().format(formatter)).append("\n")
+                    .append("📝 ").append(note.getNoteText()).append("\n\n");
+        }
+
         return sb.toString();
     }
 

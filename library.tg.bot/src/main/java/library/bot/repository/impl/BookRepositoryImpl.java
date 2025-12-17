@@ -81,8 +81,8 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book findByNameAndAuthor(String bookName, String authorName) {
         for (Book book : books) {
-            if (book.getBookTitle().equals(bookName) &&
-                    book.getAuthorName().equalsIgnoreCase(authorName)) {
+            if (book.getBookTitle().trim().equalsIgnoreCase(bookName) &&
+                    book.getAuthorName().trim().equalsIgnoreCase(authorName)) {
                 return book;
             }
         }

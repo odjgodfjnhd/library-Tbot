@@ -195,6 +195,44 @@ public class StateHandler {
             }
             //Тут завершается набор состояний для вывода книг, оценённых на конкретный рейтинг//
 
+            //Блок состояний для добавления записи к книге//
+            case "WAITING_BOOK_NAME_FOR_NOTE": {
+                sessionManager.getSession(chatId).putData("bookName", input);
+                sessionManager.getSession(chatId).setState("WAITING_AUTHOR_NAME_FOR_NOTE");
+                return "✍️ Введите имя автора:";
+            }
+
+            case "WAITING_AUTHOR_NAME_FOR_NOTE": {
+                sessionManager.getSession(chatId).putData("authorName", input);
+                sessionManager.getSession(chatId).setState("WAITING_NOTE_TEXT");
+                return "Напишите свою запись (мысли, рецензия, цитата и т.д.):";
+            }
+
+            case "WAITING_NOTE_TEXT": {
+                String bookName = sessionManager.getSession(chatId).getData("bookName");
+                String authorName = sessionManager.getSession(chatId).getData("authorName");
+                sessionManager.clearSession(chatId);
+                String userName = sessionManager.getUserNameByChatId(chatId);
+                return messageService.addNoteToBook(userName, bookName, authorName, input);
+            }
+            //Тут завершается набор состояний для добавления записи к книге//
+
+            //Блок состояний для вывода записей о книге//
+            case "WAITING_BOOK_NAME_FOR_SHOW_NOTES": {
+                sessionManager.getSession(chatId).putData("bookName", input);
+                sessionManager.getSession(chatId).setState("WAITING_AUTHOR_NAME_FOR_SHOW_NOTES");
+                return "✍️ Введите имя автора:";
+            }
+
+            case "WAITING_AUTHOR_NAME_FOR_SHOW_NOTES": {
+                String bookName = sessionManager.getSession(chatId).getData("bookName");
+                String authorName = input;
+                sessionManager.clearSession(chatId);
+                String userName = sessionManager.getUserNameByChatId(chatId);
+                return messageService.showNotesForBook(userName, bookName, authorName);
+            }
+            //Тут завершается набор состояний для вывода записей о кинге//
+
             default: {
                 sessionManager.clearSession(chatId);
                 return "⚠️ Неизвестное состояние. Используйте /help";

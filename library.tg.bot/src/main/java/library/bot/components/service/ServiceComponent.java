@@ -11,7 +11,7 @@ public class ServiceComponent {
     {
         this.diaryService = new DiaryServiceImpl(repositoryComponent.getBookRepository(),
                 repositoryComponent.getUserBookMetadataRepository(), repositoryComponent.getUserRepository(),
-                repositoryComponent.getAuthorRepository());
+                repositoryComponent.getAuthorRepository(), repositoryComponent.getNoteRepository());
     }
 
     public DiaryService getDiaryService()

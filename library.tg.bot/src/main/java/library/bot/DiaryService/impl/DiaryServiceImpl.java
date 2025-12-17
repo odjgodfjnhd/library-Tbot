@@ -1,14 +1,9 @@
 package library.bot.DiaryService.impl;
 
 import library.bot.DiaryService.DiaryService;
-import library.bot.domain.Author;
-import library.bot.domain.Book;
-import library.bot.domain.User;
-import library.bot.domain.UserBookMetadata;
-import library.bot.repository.AuthorRepository;
-import library.bot.repository.BookRepository;
-import library.bot.repository.UserBookMetadataRepository;
-import library.bot.repository.UserRepository;
+import library.bot.domain.*;
+import library.bot.repository.*;
+
 import java.util.List;
 
 public class DiaryServiceImpl implements DiaryService {
@@ -17,12 +12,14 @@ public class DiaryServiceImpl implements DiaryService {
     private final UserBookMetadataRepository userBookMetadataRepository;
     private final UserRepository userRepository;
     private final AuthorRepository authorRepository;
+    private final NoteRepository noteRepository;
 
-    public DiaryServiceImpl(BookRepository bookRepository, UserBookMetadataRepository userBookMetadataRepository, UserRepository userRepository, AuthorRepository authorRepository) {
+    public DiaryServiceImpl(BookRepository bookRepository, UserBookMetadataRepository userBookMetadataRepository, UserRepository userRepository, AuthorRepository authorRepository, NoteRepository noteRepository) {
         this.bookRepository = bookRepository;
         this.userBookMetadataRepository = userBookMetadataRepository;
         this.userRepository = userRepository;
         this.authorRepository = authorRepository;
+        this.noteRepository = noteRepository;
     }
 
     @Override
@@ -70,5 +67,35 @@ public class DiaryServiceImpl implements DiaryService {
         if (userRepository.findByName(userName) != null) return;
         User user = new User(userName);
         userRepository.save(user);
+    }
+
+    @Override
+    public void addNoteToBook(String userId, String bookName, String authorName, String noteText) {
+        Book book = bookRepository.findByNameAndAuthor(bookName, authorName);
+        if (book == null) {
+            throw new IllegalArgumentException("Книга «" + bookName + "» автора «" + authorName + "» не найдена.");
+        }
+        System.out.println("DEBUG: Найдена книга: " + book.getBookTitle() + " | ID: " + book.getBookId());
+
+        if (!bookRepository.userHaveBook(userId, bookName, authorName)) {
+            throw new IllegalArgumentException("У вас нет этой книги. Сначала добавьте её через /add_book.");
+        }
+
+        Note note = new Note(bookName, book.getBookId(), userId, noteText);
+        System.out.println("DEBUG: Создана заметка с bookId: " + note.getBookId());
+        noteRepository.save(note);
+    }
+
+    @Override
+    public List<Note> getUserNotesForBook(String userId, String bookName, String authorName) {
+        Book book = bookRepository.findByNameAndAuthor(bookName, authorName);
+        System.out.println("DEBUG: При поиске заметок — ID книги: " + (book != null ? book.getBookId() : "null"));
+        System.out.println(("DEBUG: название книги: " + bookName + "Автор книги: " + authorName));
+        if (book == null) {
+            return List.of();
+        }
+        return noteRepository.findByBookId(book.getBookId()).stream()
+                .filter(note -> userId.equals(note.getUserId()))
+                .toList();
     }
 }

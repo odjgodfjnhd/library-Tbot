@@ -1,6 +1,9 @@
 package library.bot.DiaryService;
 
 import library.bot.domain.Book;
+import library.bot.domain.Note;
+
+import java.util.List;
 
 public interface DiaryService {
     /**
@@ -48,4 +51,7 @@ public interface DiaryService {
      * @param userName имя нового пользователя
      */
     void createNewUser(String userName);
+
+    void addNoteToBook(String userId, String bookName, String authorName, String noteText);
+    List<Note> getUserNotesForBook(String userId, String bookName, String authorName);
 }
