@@ -75,22 +75,18 @@ public class DiaryServiceImpl implements DiaryService {
         if (book == null) {
             throw new IllegalArgumentException("Книга «" + bookName + "» автора «" + authorName + "» не найдена.");
         }
-        System.out.println("DEBUG: Найдена книга: " + book.getBookTitle() + " | ID: " + book.getBookId());
 
         if (!bookRepository.userHaveBook(userId, bookName, authorName)) {
             throw new IllegalArgumentException("У вас нет этой книги. Сначала добавьте её через /add_book.");
         }
 
         Note note = new Note(bookName, book.getBookId(), userId, noteText);
-        System.out.println("DEBUG: Создана заметка с bookId: " + note.getBookId());
         noteRepository.save(note);
     }
 
     @Override
     public List<Note> getUserNotesForBook(String userId, String bookName, String authorName) {
         Book book = bookRepository.findByNameAndAuthor(bookName, authorName);
-        System.out.println("DEBUG: При поиске заметок — ID книги: " + (book != null ? book.getBookId() : "null"));
-        System.out.println(("DEBUG: название книги: " + bookName + "Автор книги: " + authorName));
         if (book == null) {
             return List.of();
         }
