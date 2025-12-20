@@ -18,17 +18,18 @@ public class UserMessageService {
         this.serviceComponent = new ServiceComponent(repositoryComponent);
     }
 
-    public String createUser(String userName) {
-        if (userName == null || userName.trim().isEmpty()) {
-            return "❌ Имя пользователя не может быть пустым.";
-        }
+    public String createUser(String userId, String userName) {
         userName = userName.trim();
-        if (repositoryComponent.getUserRepository().findByName(userName) != null) {
-            return "❌ Имя «" + userName + "» уже занято. Выберите другое.";
+        if (userName.isEmpty()) {
+            return "❌ Имя не может быть пустым.";
         }
 
-        serviceComponent.getDiaryService().createNewUser(userName);
-        return "✅ Пользователь «" + userName + "» успешно зарегистрирован!";
+        if (repositoryComponent.getUserRepository().findById(userId) != null) {
+            return "❌ Вы уже зарегистрированы!";
+        }
+
+        serviceComponent.getDiaryService().createNewUser(userId, userName);
+        return "✅ Добро пожаловать, " + userName + "!";
     }
 
     public String addBook(String userName, String bookName, String authorName) {
@@ -52,7 +53,7 @@ public class UserMessageService {
             return "❌ У вас уже есть книга «" + bookName + "» автора «" + authorName + "».";
         }
 
-        serviceComponent.getDiaryService().userAddBook(userName, bookName, authorName);
+        serviceComponent.getDiaryService().userAddBook(user.getUserId(), bookName, authorName);
         return "✅ Книга «" + bookName + "» автора «" + authorName + "» добавлена!";
     }
 
@@ -315,6 +316,11 @@ public class UserMessageService {
         }
 
         return sb.toString();
+    }
+
+    public String getUsernameByChatId(String chatId)
+    {
+        return repositoryComponent.getUserRepository().findById(chatId).getUserName();
     }
 
     public String getHelpText() {

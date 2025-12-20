@@ -36,7 +36,7 @@ public class UserBookMetadata {
     }
 
     public String getGenre() {
-        return genre; // просто возвращаем значение
+        return genre;
     }
 
     public int getBookRating() {

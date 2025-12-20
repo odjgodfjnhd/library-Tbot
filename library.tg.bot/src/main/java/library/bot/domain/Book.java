@@ -16,6 +16,18 @@ public class Book {
         this.bookId = UUID.randomUUID().toString();
         this.authorId = authorId;
     }
+    Book(String bookTitle, String authorName, String authorId, String bookId)
+    {
+        this.bookTitle = bookTitle;
+        this.authorName = authorName;
+        this.bookId = bookId;
+        this.authorId = authorId;
+    }
+
+    public static Book fromDatabase(String bookTitle, String authorName, String authorId, String bookId)
+    {
+        return new Book(bookTitle, authorName, authorId, bookId);
+    }
 
     public String getBookId() {
         return bookId;

@@ -15,6 +15,15 @@ public class Author {
         this.authorId = UUID.randomUUID().toString();
     }
 
+    Author(String authorId, String authorName) {
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
+
+    public static Author fromDatabase(String authorId, String authorName) {
+        return new Author(authorId, authorName);
+    }
+
     public String getAuthorName() {
         return authorName;
     }

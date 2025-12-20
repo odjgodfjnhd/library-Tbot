@@ -20,6 +20,20 @@ public class Note {
         this.noteCreatedAt = LocalDate.now();
     }
 
+    Note(String noteId, String bookName, String bookId, String userId, String noteText, LocalDate createdAt) {
+        this.noteId = noteId;
+        this.bookName = bookName;
+        this.bookId = bookId;
+        this.userId = userId;
+        this.noteText = noteText;
+        this.noteCreatedAt = createdAt;
+    }
+
+    public static Note fromDatabase(String noteId, String bookName, String bookId, String userId, String noteText, LocalDate createdAt)
+    {
+        return new Note(noteId, bookName, bookId, userId, noteText, createdAt);
+    }
+
     public String getUserId() {
         return userId;
     }

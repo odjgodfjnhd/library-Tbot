@@ -14,16 +14,4 @@ public class SessionManager {
     public void clearSession(Long chatId) {
         sessions.remove(chatId);
     }
-
-    public void registerUser(Long chatId, String userName) {
-        chatIdToUserName.put(chatId, userName);
-    }
-
-    public String getUserNameByChatId(Long chatId) {
-        return chatIdToUserName.get(chatId);
-    }
-
-    public boolean isUserRegistered(Long chatId) {
-        return chatIdToUserName.containsKey(chatId);
-    }
 }

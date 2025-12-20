@@ -1,17 +1,11 @@
 package library.bot.domain;
 
-import java.util.UUID;
-
 public class User {
-    private String userName;
-    private String userId;
+    protected final String userId;
+    protected final String userName;
 
-    public User(String userName) {
-        this.userName = userName;
-        this.userId = UUID.randomUUID().toString();
-    }
-
-    public void setUserName(String userName) {
+    public User(String userId, String userName) {
+        this.userId = userId;
         this.userName = userName;
     }
 
