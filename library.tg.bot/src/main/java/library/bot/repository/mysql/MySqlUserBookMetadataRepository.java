@@ -6,11 +6,9 @@ import library.bot.repository.UserBookMetadataRepository;
 import java.util.List;
 
 public class MySqlUserBookMetadataRepository implements UserBookMetadataRepository {
-    private final JdbcHelper jdbc = new JdbcHelper();
-
     @Override
     public void save(String userId, UserBookMetadata metaData) {
-        jdbc.update(
+        JdbcHelper.update(
                 "INSERT INTO user_books (" +
                         "user_id, book_id, genre, book_year, rating, reading_status" +
                         ") VALUES (?, ?, ?, ?, ?, ?) " +
@@ -33,7 +31,7 @@ public class MySqlUserBookMetadataRepository implements UserBookMetadataReposito
     @Override
     public List<String> findBooksByGenre(String userId, String genre) {
         if (genre == null) return List.of();
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT book_id FROM user_books WHERE user_id = ? AND LOWER(genre) = LOWER(?)",
                 rs -> rs.getString("book_id"),
                 stmt -> {
@@ -45,7 +43,7 @@ public class MySqlUserBookMetadataRepository implements UserBookMetadataReposito
 
     @Override
     public List<String> findBooksByBookYear(String userId, int bookYear) {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT book_id FROM user_books WHERE user_id = ? AND book_year = ?",
                 rs -> rs.getString("book_id"),
                 stmt -> {
@@ -57,7 +55,7 @@ public class MySqlUserBookMetadataRepository implements UserBookMetadataReposito
 
     @Override
     public List<String> findBooksByRating(String userId, int bookRating) {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT book_id FROM user_books WHERE user_id = ? AND rating = ?",
                 rs -> rs.getString("book_id"),
                 stmt -> {
@@ -70,7 +68,7 @@ public class MySqlUserBookMetadataRepository implements UserBookMetadataReposito
     @Override
     public List<String> findBookByReadingStatus(String userId, Boolean readingStatus) {
         if (readingStatus == null) return List.of();
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT book_id FROM user_books WHERE user_id = ? AND reading_status = ?",
                 rs -> rs.getString("book_id"),
                 stmt -> {
@@ -82,7 +80,7 @@ public class MySqlUserBookMetadataRepository implements UserBookMetadataReposito
 
     @Override
     public UserBookMetadata findBookMetaDataByUserIdAndBookId(String userId, String bookId) {
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT genre, book_year, rating, reading_status " +
                         "FROM user_books WHERE user_id = ? AND book_id = ?",
                 rs -> {

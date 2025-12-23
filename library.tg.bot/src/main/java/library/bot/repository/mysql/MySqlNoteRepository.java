@@ -7,11 +7,9 @@ import java.sql.Date;
 import java.util.List;
 
 public class MySqlNoteRepository implements NoteRepository {
-    private final JdbcHelper jdbc = new JdbcHelper();
-
     @Override
     public void save(Note note) {
-        jdbc.update(
+        JdbcHelper.update(
                 "INSERT INTO notes (note_id, user_id, book_id, book_name, note_text, created_at) " +
                         "VALUES (?, ?, ?, ?, ?, ?)",
                 stmt -> {
@@ -27,7 +25,7 @@ public class MySqlNoteRepository implements NoteRepository {
 
     @Override
     public Note findById(String noteId) {
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT note_id, user_id, book_id, book_name, note_text, created_at " +
                         "FROM notes WHERE note_id = ?",
                 rs -> rs.next()
@@ -46,7 +44,7 @@ public class MySqlNoteRepository implements NoteRepository {
 
     @Override
     public List<Note> findByBookId(String bookId) {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT note_id, user_id, book_id, book_name, note_text, created_at " +
                         "FROM notes WHERE book_id = ?",
                 rs -> Note.fromDatabase(
@@ -63,7 +61,7 @@ public class MySqlNoteRepository implements NoteRepository {
 
     @Override
     public List<Note> findByUserId(String userId) {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT note_id, user_id, book_id, book_name, note_text, created_at " +
                         "FROM notes WHERE user_id = ?",
                 rs -> Note.fromDatabase(
@@ -80,7 +78,7 @@ public class MySqlNoteRepository implements NoteRepository {
 
     @Override
     public List<Note> getAllNotes() {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT note_id, user_id, book_id, book_name, note_text, created_at FROM notes",
                 rs -> Note.fromDatabase(
                         rs.getString("note_id"),
@@ -96,7 +94,7 @@ public class MySqlNoteRepository implements NoteRepository {
 
     @Override
     public int getTotalNotes() {
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT COUNT(*) FROM notes",
                 rs -> rs.next() ? rs.getInt(1) : 0,
                 stmt -> {}

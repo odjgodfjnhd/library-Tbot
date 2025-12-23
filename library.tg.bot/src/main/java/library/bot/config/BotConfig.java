@@ -14,9 +14,13 @@ public class BotConfig {
     }
 
     public static AppMode getAppMode() {
-        String mode =  dotenv.get("APP_MODE", "IN_MEMORY");
-        return AppMode.valueOf(mode);
-
+        String mode = dotenv.get("APP_MODE", "IN_MEMORY");
+        try {
+            return AppMode.valueOf(mode.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException(
+                    "Неверное значение APP_MODE в .env");
+        }
     }
 
     public static String getDbUrl() {

@@ -6,15 +6,13 @@ import library.bot.repository.AuthorRepository;
 import java.util.List;
 
 public class MySqlAuthorRepository implements AuthorRepository {
-    private final JdbcHelper jdbc = new JdbcHelper();
-
     @Override
     public void save(Author author, String userId) {
         Author existingAuthor = findByName(author.getAuthorName());
         String authorId = (existingAuthor != null) ? existingAuthor.getAuthorId() : author.getAuthorId();
 
         if (existingAuthor == null) {
-            jdbc.update(
+            JdbcHelper.update(
                     "INSERT INTO authors (author_id, author_name) VALUES (?, ?)",
                     stmt -> {
                         stmt.setString(1, authorId);
@@ -23,7 +21,7 @@ public class MySqlAuthorRepository implements AuthorRepository {
             );
         }
 
-        jdbc.update(
+        JdbcHelper.update(
                 "INSERT IGNORE INTO user_authors (user_id, author_id) VALUES (?, ?)",
                 stmt -> {
                     stmt.setString(1, userId);
@@ -34,7 +32,7 @@ public class MySqlAuthorRepository implements AuthorRepository {
 
     @Override
     public Author findById(String authorId) {
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT author_id, author_name FROM authors WHERE author_id = ?",
                 rs -> rs.next() ? Author.fromDatabase(rs.getString("author_id"), rs.getString("author_name")) : null,
                 stmt -> stmt.setString(1, authorId)
@@ -44,7 +42,7 @@ public class MySqlAuthorRepository implements AuthorRepository {
     @Override
     public Author findByName(String authorName) {
         String normalized = authorName.toLowerCase();
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT author_id, author_name FROM authors",
                 rs -> {
                     while (rs.next()) {
@@ -60,7 +58,7 @@ public class MySqlAuthorRepository implements AuthorRepository {
 
     @Override
     public List<Author> getAllAuthors() {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT author_id, author_name FROM authors",
                 rs -> Author.fromDatabase(rs.getString("author_id"), rs.getString("author_name")),
                 stmt -> {}
@@ -69,7 +67,7 @@ public class MySqlAuthorRepository implements AuthorRepository {
 
     @Override
     public int getTotalAuthors() {
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT COUNT(*) FROM authors",
                 rs -> rs.next() ? rs.getInt(1) : 0,
                 stmt -> {}
@@ -78,7 +76,7 @@ public class MySqlAuthorRepository implements AuthorRepository {
 
     @Override
     public List<Author> getAuthorsByUserId(String userId) {
-        List<Author> authors = jdbc.queryForList(
+        List<Author> authors = JdbcHelper.queryForList(
                 "SELECT a.author_id, a.author_name " +
                         "FROM user_authors ua " +
                         "JOIN authors a ON ua.author_id = a.author_id " +

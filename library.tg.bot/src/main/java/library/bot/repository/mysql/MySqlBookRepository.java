@@ -6,15 +6,13 @@ import library.bot.repository.BookRepository;
 import java.util.List;
 
 public class MySqlBookRepository implements BookRepository {
-    private final JdbcHelper jdbc = new JdbcHelper();
-
     @Override
     public void save(Book book, String userId) {
         Book existingBook = findByNameAndAuthor(book.getBookTitle(), book.getAuthorName());
         String bookId = (existingBook != null) ? existingBook.getBookId() : book.getBookId();
 
         if (existingBook == null) {
-            jdbc.update(
+            JdbcHelper.update(
                     "INSERT INTO books (book_id, title, author_id, author_name) VALUES (?, ?, ?, ?)",
                     stmt -> {
                         stmt.setString(1, bookId);
@@ -25,7 +23,7 @@ public class MySqlBookRepository implements BookRepository {
             );
         }
 
-        jdbc.update(
+        JdbcHelper.update(
                 "INSERT IGNORE INTO user_books (user_id, book_id) VALUES (?, ?)",
                 stmt -> {
                     stmt.setString(1, userId);
@@ -36,7 +34,7 @@ public class MySqlBookRepository implements BookRepository {
 
     @Override
     public Book findById(String bookId) {
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT book_id, title, author_name, author_id FROM books WHERE book_id = ?",
                 rs -> rs.next()
                         ? Book.fromDatabase(rs.getString("title"), rs.getString("author_name"), rs.getString("author_id"), rs.getString("book_id"))
@@ -47,7 +45,7 @@ public class MySqlBookRepository implements BookRepository {
 
     @Override
     public List<Book> getAllBooks() {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT book_id, title, author_name, author_id FROM books",
                 rs -> Book.fromDatabase(rs.getString("title"), rs.getString("author_name"), rs.getString("author_id"), rs.getString("book_id")),
                 stmt -> {}
@@ -56,7 +54,7 @@ public class MySqlBookRepository implements BookRepository {
 
     @Override
     public List<String> findByAuthorId(String authorId) {
-        return jdbc.queryForList(
+        return JdbcHelper.queryForList(
                 "SELECT book_id FROM books WHERE author_id = ?",
                 rs -> rs.getString("book_id"),
                 stmt -> stmt.setString(1, authorId)
@@ -65,7 +63,7 @@ public class MySqlBookRepository implements BookRepository {
 
     @Override
     public int getCountOfTotalBooks() {
-        return jdbc.queryForObject(
+        return JdbcHelper.queryForObject(
                 "SELECT COUNT(*) FROM books",
                 rs -> rs.next() ? rs.getInt(1) : 0,
                 stmt -> {}
@@ -74,7 +72,7 @@ public class MySqlBookRepository implements BookRepository {
 
     @Override
     public List<String> getBooksByUserId(String userId) {
-        List<String> bookIds = jdbc.queryForList(
+        List<String> bookIds = JdbcHelper.queryForList(
                 "SELECT book_id FROM user_books WHERE user_id = ?",
                 rs -> rs.getString("book_id"),
                 stmt -> stmt.setString(1, userId)
@@ -87,25 +85,23 @@ public class MySqlBookRepository implements BookRepository {
         String normalizedBookName = bookName.trim().toLowerCase();
         String normalizedAuthorName = authorName.trim().toLowerCase();
 
-        final boolean[] found = {false};
-        jdbc.queryForObject(
-                "SELECT b.title, b.author_name FROM user_books ub " +
-                        "JOIN books b ON ub.book_id = b.book_id " +
-                        "WHERE ub.user_id = ?",
-                rs -> {
-                    while (rs.next()) {
-                        String dbTitle = rs.getString("title").trim().toLowerCase();
-                        String dbAuthor = rs.getString("author_name").trim().toLowerCase();
-                        if (dbTitle.equals(normalizedBookName) && dbAuthor.equals(normalizedAuthorName)) {
-                            found[0] = true;
-                            break;
-                        }
-                    }
-                    return null;
-                },
-                stmt -> stmt.setString(1, userId)
+        Integer result = JdbcHelper.queryForObject(
+                "SELECT EXISTS(" +
+                        "   SELECT 1 FROM user_books ub " +
+                        "   JOIN books b ON ub.book_id = b.book_id " +
+                        "   WHERE ub.user_id = ? " +
+                        "     AND LOWER(TRIM(b.title)) = LOWER(?) " +
+                        "     AND LOWER(TRIM(b.author_name)) = LOWER(?)" +
+                        ")",
+                rs -> rs.next() ? rs.getInt(1) : 0,
+                stmt -> {
+                    stmt.setString(1, userId);
+                    stmt.setString(2, normalizedBookName);
+                    stmt.setString(3, normalizedAuthorName);
+                }
         );
-        return found[0];
+
+        return result == 1;
     }
 
     @Override
@@ -113,24 +109,21 @@ public class MySqlBookRepository implements BookRepository {
         String normalizedBookName = bookName.trim().toLowerCase();
         String normalizedAuthorName = authorName.trim().toLowerCase();
 
-        return jdbc.queryForObject(
-                "SELECT book_id, title, author_name, author_id FROM books",
-                rs -> {
-                    while (rs.next()) {
-                        String dbTitle = rs.getString("title").trim().toLowerCase();
-                        String dbAuthor = rs.getString("author_name").trim().toLowerCase();
-                        if (dbTitle.equals(normalizedBookName) && dbAuthor.equals(normalizedAuthorName)) {
-                            return Book.fromDatabase(
-                                    rs.getString("title"),
-                                    rs.getString("author_name"),
-                                    rs.getString("author_id"),
-                                    rs.getString("book_id")
-                            );
-                        }
-                    }
-                    return null;
-                },
-                stmt -> {}
+        return JdbcHelper.queryForObject(
+                "SELECT book_id, title, author_name, author_id FROM books " +
+                        "WHERE LOWER(TRIM(title)) = ? AND LOWER(TRIM(author_name)) = ?",
+                rs -> rs.next()
+                        ? Book.fromDatabase(
+                        rs.getString("title"),
+                        rs.getString("author_name"),
+                        rs.getString("author_id"),
+                        rs.getString("book_id")
+                )
+                        : null,
+                stmt -> {
+                    stmt.setString(1, normalizedBookName);
+                    stmt.setString(2, normalizedAuthorName);
+                }
         );
     }
 }

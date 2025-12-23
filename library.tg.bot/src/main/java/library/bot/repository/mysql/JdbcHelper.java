@@ -1,19 +1,21 @@
 package library.bot.repository.mysql;
-
-import library.bot.config.DatabaseConfig;
-
 import javax.sql.DataSource;
 import java.sql.*;
 
 public class JdbcHelper {
-    private final DataSource dataSource;
 
-    public JdbcHelper() {
-        this.dataSource = DatabaseConfig.getDataSource();
+    @FunctionalInterface
+    public interface ResultSetMapper<T> {
+        T map(ResultSet rs) throws SQLException;
     }
 
-    public <T> T queryForObject(String sql, ResultSetMapper<T> mapper, PreparedStatementSetter setter) {
-        try (Connection conn = dataSource.getConnection();
+    @FunctionalInterface
+    public interface PreparedStatementSetter {
+        void setParameters(PreparedStatement stmt) throws SQLException;
+    }
+
+    public static <T> T queryForObject(String sql, ResultSetMapper<T> mapper, PreparedStatementSetter setter) {
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             setter.setParameters(stmt);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -24,8 +26,8 @@ public class JdbcHelper {
         }
     }
 
-    public <T> java.util.List<T> queryForList(String sql, ResultSetMapper<T> mapper, PreparedStatementSetter setter) {
-        try (Connection conn = dataSource.getConnection();
+    public static <T> java.util.List<T> queryForList(String sql, ResultSetMapper<T> mapper, PreparedStatementSetter setter) {
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             setter.setParameters(stmt);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -40,8 +42,8 @@ public class JdbcHelper {
         }
     }
 
-    public void update(String sql, PreparedStatementSetter setter) {
-        try (Connection conn = dataSource.getConnection();
+    public static void update(String sql, PreparedStatementSetter setter) {
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             setter.setParameters(stmt);
             stmt.executeUpdate();
@@ -50,13 +52,8 @@ public class JdbcHelper {
         }
     }
 
-    @FunctionalInterface
-    public interface ResultSetMapper<T> {
-        T map(ResultSet rs) throws SQLException;
-    }
-
-    @FunctionalInterface
-    public interface PreparedStatementSetter {
-        void setParameters(PreparedStatement stmt) throws SQLException;
+    private static Connection getConnection() throws SQLException {
+        DataSource ds = library.bot.config.DatabaseConfig.getDataSource();
+        return ds.getConnection();
     }
 }
