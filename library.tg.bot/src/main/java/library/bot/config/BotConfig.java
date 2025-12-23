@@ -13,8 +13,10 @@ public class BotConfig {
         return dotenv.get("TELEGRAM_BOT_USERNAME");
     }
 
-    public static String getAppMode() {
-        return dotenv.get("APP_MODE", "IN_MEMORY");
+    public static AppMode getAppMode() {
+        String mode =  dotenv.get("APP_MODE", "IN_MEMORY");
+        return AppMode.valueOf(mode);
+
     }
 
     public static String getDbUrl() {

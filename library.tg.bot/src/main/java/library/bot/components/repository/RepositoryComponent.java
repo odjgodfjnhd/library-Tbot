@@ -1,5 +1,6 @@
 package library.bot.components.repository;
 
+import library.bot.config.AppMode;
 import library.bot.config.BotConfig;
 import library.bot.repository.*;
 import library.bot.repository.impl.*;
@@ -13,8 +14,8 @@ public class RepositoryComponent {
     private final NoteRepository noteRepository;
 
     public RepositoryComponent() {
-        String mode = BotConfig.getAppMode();
-        if ("MYSQL".equals(mode)) {
+        AppMode mode = BotConfig.getAppMode();
+        if (AppMode.MYSQL == mode) {
             this.userRepository = new MySqlUserRepository();
             this.bookRepository = new MySqlBookRepository();
             this.noteRepository = new MySqlNoteRepository();
