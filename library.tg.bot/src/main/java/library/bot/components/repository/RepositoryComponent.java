@@ -1,7 +1,10 @@
 package library.bot.components.repository;
 
+import library.bot.config.AppMode;
+import library.bot.config.BotConfig;
 import library.bot.repository.*;
 import library.bot.repository.impl.*;
+import library.bot.repository.mysql.*;
 
 public class RepositoryComponent {
     private final BookRepository bookRepository;
@@ -9,17 +12,24 @@ public class RepositoryComponent {
     private final UserRepository userRepository;
     private final UserBookMetadataRepository userBookMetadataRepository;
     private final NoteRepository noteRepository;
-    private final QuoteRepository quoteRepository;
 
-    public RepositoryComponent()
-    {
-        this.bookRepository = new BookRepositoryImpl();
-        this.authorRepository = new AuthorRepositoryImpl();
-        this.userRepository = new UserRepositoryImpl();
-        this.userBookMetadataRepository = new UserBookMetadataRepositoryImpl();
-        this.noteRepository = new NoteRepositoryImpl();
-        this.quoteRepository = new QuoteRepositoryImpl();
+    public RepositoryComponent() {
+        AppMode mode = BotConfig.getAppMode();
+        if (AppMode.MYSQL == mode) {
+            this.userRepository = new MySqlUserRepository();
+            this.bookRepository = new MySqlBookRepository();
+            this.noteRepository = new MySqlNoteRepository();
+            this.userBookMetadataRepository = new MySqlUserBookMetadataRepository();
+            this.authorRepository = new MySqlAuthorRepository();
+        } else {
+            this.userRepository = new library.bot.repository.impl.UserRepositoryImpl();
+            this.bookRepository = new library.bot.repository.impl.BookRepositoryImpl();
+            this.noteRepository = new library.bot.repository.impl.NoteRepositoryImpl();
+            this.userBookMetadataRepository = new library.bot.repository.impl.UserBookMetadataRepositoryImpl();
+            this.authorRepository = new library.bot.repository.impl.AuthorRepositoryImpl();
+        }
     }
+
 
     public AuthorRepository getAuthorRepository() {
         return authorRepository;
@@ -31,10 +41,6 @@ public class RepositoryComponent {
 
     public NoteRepository getNoteRepository() {
         return noteRepository;
-    }
-
-    public QuoteRepository getQuoteRepository() {
-        return quoteRepository;
     }
 
     public UserRepository getUserRepository() {

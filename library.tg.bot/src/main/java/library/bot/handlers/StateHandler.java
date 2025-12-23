@@ -16,9 +16,9 @@ public class StateHandler {
         switch (state) {
             //Блок состояний для создания пользователя//
             case "WAITING_USER_NAME_FOR_CREATE": {
-                sessionManager.registerUser(chatId, input);
                 sessionManager.clearSession(chatId);
-                return messageService.createUser(input);
+                String result = messageService.createUser(chatId.toString(), input);
+                return result;
             }
             //Тут завершается набор состояний для регистрации пользователя//
 
@@ -32,7 +32,7 @@ public class StateHandler {
             case "WAITING_AUTHOR_NAME_FOR_ADD_BOOK": {
                 String bookName = sessionManager.getSession(chatId).getData("bookName");
                 sessionManager.clearSession(chatId);
-                String userName = sessionManager.getUserNameByChatId(chatId);
+                String userName = messageService.getUsernameByChatId(chatId.toString());
                 return messageService.addBook(userName, bookName, input);
             }
             //Тут завершается набор состояний для добавления книги пользователю//
@@ -62,7 +62,7 @@ public class StateHandler {
                                 "Попробуйте поставить оценку книге снова через /rate_book.";
                     }
                     sessionManager.clearSession(chatId);
-                    String userName = sessionManager.getUserNameByChatId(chatId);
+                    String userName = messageService.getUsernameByChatId(chatId.toString());
                     return messageService.rateBook(userName, bookName, authorName, rating);
                 } catch (NumberFormatException e) {
                     sessionManager.clearSession(chatId);
@@ -82,7 +82,7 @@ public class StateHandler {
             case "WAITING_AUTHOR_NAME_FOR_SHOW_INFO": {
                 String bookName = sessionManager.getSession(chatId).getData("bookName");
                 sessionManager.clearSession(chatId);
-                String userName = sessionManager.getUserNameByChatId(chatId);
+                String userName = messageService.getUsernameByChatId(chatId.toString());
                 return messageService.showBookInfo(userName, bookName, input);
             }
             //Тут завершается набор состояний для вывода подробной информации по книге//
@@ -104,7 +104,7 @@ public class StateHandler {
                 String bookName = sessionManager.getSession(chatId).getData("bookName");
                 String authorName = sessionManager.getSession(chatId).getData("authorName");
                 sessionManager.clearSession(chatId);
-                String userName = sessionManager.getUserNameByChatId(chatId);
+                String userName = messageService.getUsernameByChatId(chatId.toString());
                 return messageService.addBookGenre(userName, bookName, authorName, input);
             }
             //Тут завершается набор состояний для добавления жанра книге//
@@ -133,7 +133,7 @@ public class StateHandler {
                                 "Попробуйте снова через /add_book_year.";
                     }
                     sessionManager.clearSession(chatId);
-                    String userName = sessionManager.getUserNameByChatId(chatId);
+                    String userName = messageService.getUsernameByChatId(chatId.toString());
                     return messageService.addBookYear(userName, bookName, authorName, year);
                 } catch (NumberFormatException e) {
                     return "❌ Введите целое число (например: 1967).\n" +
@@ -176,7 +176,7 @@ public class StateHandler {
                 String bookName = sessionManager.getSession(chatId).getData("bookName");
                 String authorName = sessionManager.getSession(chatId).getData("authorName");
                 sessionManager.clearSession(chatId);
-                String userName = sessionManager.getUserNameByChatId(chatId);
+                String userName = messageService.getUsernameByChatId(chatId.toString());
                 return messageService.setReadingStatus(userName, bookName, authorName, isRead);
             }
             //Тут завершается набор состояний для установки статуса книги//
@@ -186,7 +186,7 @@ public class StateHandler {
                 try {
                     int rating = Integer.parseInt(input.trim());
                     sessionManager.clearSession(chatId);
-                    String userName = sessionManager.getUserNameByChatId(chatId);
+                    String userName = messageService.getUsernameByChatId(chatId.toString());
                     return messageService.showBooksRatedOn(userName, rating);
                 } catch (NumberFormatException e) {
                     return "❌ Введите целое число от 1 до 5.\n" +
@@ -212,7 +212,7 @@ public class StateHandler {
                 String bookName = sessionManager.getSession(chatId).getData("bookName");
                 String authorName = sessionManager.getSession(chatId).getData("authorName");
                 sessionManager.clearSession(chatId);
-                String userName = sessionManager.getUserNameByChatId(chatId);
+                String userName = messageService.getUsernameByChatId(chatId.toString());
                 return messageService.addNoteToBook(userName, bookName, authorName, input);
             }
             //Тут завершается набор состояний для добавления записи к книге//
@@ -228,7 +228,7 @@ public class StateHandler {
                 String bookName = sessionManager.getSession(chatId).getData("bookName");
                 String authorName = input;
                 sessionManager.clearSession(chatId);
-                String userName = sessionManager.getUserNameByChatId(chatId);
+                String userName = messageService.getUsernameByChatId(chatId.toString());
                 return messageService.showNotesForBook(userName, bookName, authorName);
             }
             //Тут завершается набор состояний для вывода записей о кинге//

@@ -50,7 +50,7 @@ public interface DiaryService {
      * Метод для создания нового пользователя
      * @param userName имя нового пользователя
      */
-    void createNewUser(String userName);
+    void createNewUser(String userId, String userName);
 
     void addNoteToBook(String userId, String bookName, String authorName, String noteText);
     List<Note> getUserNotesForBook(String userId, String bookName, String authorName);

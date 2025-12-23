@@ -1,15 +1,18 @@
 package library.bot.handlers;
 
+import library.bot.components.service.RegistrationService;
 import library.bot.handlers.SessionManager;
 import library.bot.components.service.UserMessageService;
 
 public class CommandHandler {
     private final UserMessageService messageService;
     private final SessionManager sessionManager;
+    private final RegistrationService registrationService;
 
-    public CommandHandler(UserMessageService messageService, SessionManager sessionManager) {
+    public CommandHandler(UserMessageService messageService, SessionManager sessionManager, RegistrationService registrationService) {
         this.messageService = messageService;
         this.sessionManager = sessionManager;
+        this.registrationService = registrationService;
     }
 
     public String handleCommand(Long chatId, String command) {
@@ -19,7 +22,7 @@ public class CommandHandler {
             return messageService.getHelpText();
         }
 
-        if (!sessionManager.isUserRegistered(chatId)) {
+        if (!registrationService.isUserRegistered(chatId)) {
             if ("/create_user".equals(command)) {
                 sessionManager.getSession(chatId).setState("WAITING_USER_NAME_FOR_CREATE");
                 return "👤 Введите имя пользователя:";
@@ -27,7 +30,7 @@ public class CommandHandler {
             return "⚠️ Сначала зарегистрируйтесь! Используйте /create_user";
         }
 
-        String userName = sessionManager.getUserNameByChatId(chatId);
+        String userName = messageService.getUsernameByChatId(chatId.toString());
         switch (command) {
             case "/create_user":
                 return "❌ Вы уже зарегистрированы как «" + userName + "».";
